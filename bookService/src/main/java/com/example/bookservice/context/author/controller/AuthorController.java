@@ -2,6 +2,7 @@ package com.example.bookservice.context.author.controller;
 
 import com.example.bookservice.api.Endpoints;
 import com.example.bookservice.context.author.model.Author;
+import com.example.bookservice.context.author.model.AuthorModel;
 import com.example.bookservice.context.author.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,8 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @GetMapping
-    public ResponseEntity<List<Author>> allGenres() {
-        return ResponseEntity.status(HttpStatus.OK).body(authorService.findAllGenres());
+    public ResponseEntity<List<AuthorModel>> allGenres() {
+        return ResponseEntity.status(HttpStatus.OK).body(authorService.findAllAuthors());
     }
 
 

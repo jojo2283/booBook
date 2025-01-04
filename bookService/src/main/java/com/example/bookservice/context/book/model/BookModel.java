@@ -1,6 +1,9 @@
 package com.example.bookservice.context.book.model;
 
 import com.example.bookservice.context.author.model.AuthorModel;
+import com.example.bookservice.context.genre.model.Genre;
+import com.example.bookservice.context.publisher.model.Publisher;
+import com.example.bookservice.context.theme.model.Theme;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +21,9 @@ public class BookModel {
     private String ISBN;
     private List<AuthorModel> authors;
     private List<BookCopyModel> copies;
+    private Genre genre;
+    private Theme theme;
+    private Publisher publisher;
 
     public static BookModel toModel(Book book) {
         BookModel model = new BookModel();
@@ -25,7 +31,9 @@ public class BookModel {
         model.setTitle(book.getTitle());
         model.setYearPublished(book.getYearPublished());
         model.setISBN(book.getISBN());
-
+        model.setGenre(book.getGenre());
+        model.setTheme(book.getTheme());
+        model.setPublisher(book.getPublisher());
 
         if (book.getAuthors() != null) {
             model.setAuthors(
