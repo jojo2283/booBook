@@ -5,9 +5,9 @@ spring:
   application:
     name: bookService
   datasource:
-    url: jdbc:postgresql://localhost:5432/booBook
-    username: postgres
-    password: com191084
+    url: jdbc:postgresql://dmitriy.space:5100/boobook
+    username: admin
+    password: admin
   jpa:
     properties:
       hibernate:
@@ -22,7 +22,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8080/realms/booBook_realm
-
 #keycloak:
 #  auth-server-url: http://localhost:8080
 #  realm: booBook_realm

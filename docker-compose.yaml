@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  operation:
+    build:
+      context: ./operationService
+      dockerfile: Dockerfile
+    ports:
+      - "5110:8080"
+    networks:
+      - app-network
+
+  book:
+    build:
+      context: ./bookService
+      dockerfile: Dockerfile
+    ports:
+      - "5112:8082"
+    networks:
+      - app-network
+
+  # auth:
+  #   build:
+  #     context: ./authService
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "5111:8081"
+  #   networks:
+  #     - app-network
+networks:
+  app-network:
+    driver: bridge
