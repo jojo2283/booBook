@@ -20,17 +20,31 @@ public class BookController {
 
     @GetMapping("/find")
     public ResponseEntity<List<BookModel>> findBooks(@ModelAttribute BookSearchRequest request) {
-         return ResponseEntity.ok(bookService.findBooks(request));
+        return ResponseEntity.ok(bookService.findBooks(request));
     }
 
     @GetMapping("/books/{id}")
-    public ResponseEntity<BookModel> getBookById(@PathVariable Long id){
+    public ResponseEntity<BookModel> getBookById(@PathVariable Long id) {
         return ResponseEntity.ok(bookService.findBookById(id));
     }
 
     @PostMapping("/newBook")
-    public ResponseEntity<BookModel> createBook(@RequestBody Book Book){
+    public ResponseEntity<BookModel> createBook(@RequestBody Book Book) {
         return ResponseEntity.ok(bookService.createBook(Book));
+    }
+
+    @PutMapping("/books/{id}")
+    public ResponseEntity<BookModel> updateBook(@PathVariable Long id, @RequestBody Book Book) {
+        return ResponseEntity.ok(bookService.updateBook(id, Book));
+    }
+
+    @DeleteMapping("/books/{id}")
+    public ResponseEntity<Void> deleteHumanBeing(@PathVariable Long id) {
+        if (bookService.deleteBook(id)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

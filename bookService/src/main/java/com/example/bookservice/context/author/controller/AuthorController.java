@@ -7,9 +7,7 @@ import com.example.bookservice.context.author.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +20,20 @@ public class AuthorController {
     @GetMapping
     public ResponseEntity<List<AuthorModel>> allGenres() {
         return ResponseEntity.status(HttpStatus.OK).body(authorService.findAllAuthors());
+    }
+
+    @PostMapping
+    public ResponseEntity<AuthorModel> createAuthor(@RequestBody Author author){
+        return ResponseEntity.ok(authorService.createAuthor(author));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteHumanBeing(@PathVariable Long id) {
+        if (authorService.deleteAuthor(id)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 

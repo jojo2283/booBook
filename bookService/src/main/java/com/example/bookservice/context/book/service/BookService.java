@@ -96,4 +96,28 @@ public class BookService {
 
         return BookModel.toModel(bookRepository.save(book));
     }
+
+    public BookModel updateBook(Long id, Book book) {
+        Book oldBook = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
+
+        oldBook.setAuthors(book.getAuthors());
+        oldBook.setISBN(book.getISBN());
+        oldBook.setTitle(book.getTitle());
+        oldBook.setGenre(book.getGenre());
+        oldBook.setPublisher(book.getPublisher());
+        oldBook.setTheme(book.getTheme());
+        return BookModel.toModel(bookRepository.save(oldBook));
+    }
+
+    public boolean deleteBook(Long id) {
+        Book book = bookRepository.findById(id).orElse(null);
+
+        if (book == null) {
+            return false;
+        }
+
+        bookRepository.deleteById(id);
+
+        return true;
+    }
 }
