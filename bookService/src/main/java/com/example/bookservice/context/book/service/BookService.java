@@ -1,5 +1,7 @@
 package com.example.bookservice.context.book.service;
 
+import com.example.bookservice.context.book.exception.BookAlreadyExistException;
+import com.example.bookservice.context.book.exception.BookNotFoundException;
 import com.example.bookservice.context.book.model.Book;
 import com.example.bookservice.context.book.model.BookModel;
 import com.example.bookservice.context.book.model.BookSearchRequest;
@@ -7,6 +9,7 @@ import com.example.bookservice.context.book.repository.BookRepository;
 import com.example.bookservice.context.book.specification.BookSpecifications;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,17 +44,17 @@ public class BookService {
         }
 
 
-        if (request.getThemes() != null ) {
+        if (request.getThemes() != null) {
             spec = spec.and(BookSpecifications.hasTheme(request.getThemes()));
         }
 
-         // Фильтрация по издателю
+        // Фильтрация по издателю
         if (request.getPublishers() != null) {
             spec = spec.and(BookSpecifications.hasPublisher(request.getPublishers()));
         }
 
         // Фильтрация по статусу
-        if (request.getAvailable() != null &&request.getAvailable()) {
+        if (request.getAvailable() != null && request.getAvailable()) {
             spec = spec.and(BookSpecifications.hasAvailableCopies());
         } else if (request.getAvailable() != null) {
             spec = spec.and(BookSpecifications.hasNoAvailableCopies());
@@ -77,4 +80,20 @@ public class BookService {
                 .map(BookModel::toModel).collect(Collectors.toList());
     }
 
+    public BookModel findBookById(Long id) {
+        Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
+
+
+        return ResponseEntity.ok(BookModel.toModel(book)).getBody();
+
+    }
+
+    public BookModel createBook(Book book) {
+        Book bookFromISBN = bookRepository.findBookByISBN(book.getISBN());
+        if (bookFromISBN != null) {
+            throw new BookAlreadyExistException("Book already exist");
+        }
+
+        return BookModel.toModel(bookRepository.save(book));
+    }
 }

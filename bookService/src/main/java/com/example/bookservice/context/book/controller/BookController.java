@@ -1,14 +1,13 @@
 package com.example.bookservice.context.book.controller;
 
 import com.example.bookservice.api.Endpoints;
+import com.example.bookservice.context.book.model.Book;
 import com.example.bookservice.context.book.model.BookModel;
 import com.example.bookservice.context.book.model.BookSearchRequest;
 import com.example.bookservice.context.book.service.BookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,8 +19,18 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping("/find")
-    public List<BookModel> findBooks(@ModelAttribute BookSearchRequest request) {
-         return bookService.findBooks(request);
+    public ResponseEntity<List<BookModel>> findBooks(@ModelAttribute BookSearchRequest request) {
+         return ResponseEntity.ok(bookService.findBooks(request));
+    }
+
+    @GetMapping("/books/{id}")
+    public ResponseEntity<BookModel> getBookById(@PathVariable Long id){
+        return ResponseEntity.ok(bookService.findBookById(id));
+    }
+
+    @PostMapping("/newBook")
+    public ResponseEntity<BookModel> createBook(@RequestBody Book Book){
+        return ResponseEntity.ok(bookService.createBook(Book));
     }
 
 }
