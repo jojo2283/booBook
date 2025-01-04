@@ -16,7 +16,8 @@ spring:
     hibernate:
       temp:
         use_jdbc_metadata_defaults: false
-    ddl-auto: update
+
+      ddl-auto: update
   security:
     oauth2:
       resourceserver:
