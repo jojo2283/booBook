@@ -22,6 +22,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }} # Specific port for SSH connection
           username: ${{ secrets.SSH_USERNAME }} # Username for the SSH connection
           key: ${{ secrets.SSH_PRIVATE_KEY }} # SSH private key stored in GitHub Secrets
+          command_timeout: 200m
           script: |
             cd /home/service/itmo-is-course/booBook
             git pull origin main
