@@ -8,4 +8,4 @@ RUN  ./gradlew build
 
 ENTRYPOINT ["java", "-jar" ,"build/libs/operationService-0.0.1-SNAPSHOT.jar"]
 
-EXPOSE 3000
+EXPOSE 8080
