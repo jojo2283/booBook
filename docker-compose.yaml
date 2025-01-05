@@ -5,28 +5,62 @@ services:
     build:
       context: ./operationService
       dockerfile: Dockerfile
+      # Ограничения ресурсов при сборке
+      args:
+        - --cpus=0.5
+        - --memory=300M
     ports:
       - "5110:8080"
     networks:
       - app-network
+    # Ограничения ресурсов при работе
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5" # Ограничение на использование 0.5 CPU
+          memory: "300M" # Ограничение на использование 500 MB RAM
 
   book:
     build:
       context: ./bookService
       dockerfile: Dockerfile
+      # Ограничения ресурсов при сборке
+      args:
+        - --cpus=0.5
+        - --memory=300M
     ports:
       - "5112:8082"
     networks:
       - app-network
+    # Ограничения ресурсов при работе
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5" # Ограничение на использование 0.5 CPU
+          memory: "300M" # Ограничение на использование 500 MB RAM
 
   # auth:
   #   build:
   #     context: ./authService
   #     dockerfile: Dockerfile
-  #   ports:
-  #     - "5111:8081"
-  #   networks:
-  #     - app-network
+  #     # Ограничения ресурсов при сборке
+  #     args:
+  #       - --cpus=1
+  #       - --memory=750M
+  #     ports:
+  #       - "5111:8081"
+  #     networks:
+  #       - app-network
+  #     # Ограничения ресурсов при работе
+  #     deploy:
+  #       resources:
+  #         limits:
+  #           cpus: "0.5"  # Ограничение на использование 0.5 CPU
+  #           memory: "500M"  # Ограничение на использование 500 MB RAM
+  #         reservations:
+  #           cpus: "0.25"  # Резервирование 25% CPU
+  #           memory: "256M"  # Резервирование 256 MB RAM
+
 networks:
   app-network:
     driver: bridge
