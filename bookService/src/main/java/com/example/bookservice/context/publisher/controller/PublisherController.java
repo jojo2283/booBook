@@ -6,9 +6,7 @@ import com.example.bookservice.context.publisher.service.PublisherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +19,20 @@ public class PublisherController {
     @GetMapping
     public ResponseEntity<List<Publisher>> allPublishers() {
         return ResponseEntity.status(HttpStatus.OK).body(publisherService.findAllPublishers());
+    }
+
+    @PostMapping
+    public ResponseEntity<Publisher> createPublisher(@RequestBody Publisher publisher) {
+        return ResponseEntity.ok(publisherService.createPublisher(publisher));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePublisher(@PathVariable Long id) {
+        if (publisherService.deletePublisher(id)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 

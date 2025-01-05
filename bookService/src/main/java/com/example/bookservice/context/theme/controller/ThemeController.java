@@ -6,9 +6,7 @@ import com.example.bookservice.context.theme.service.ThemeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,5 +21,18 @@ public class ThemeController {
         return ResponseEntity.status(HttpStatus.OK).body(themeService.findAllThemes());
     }
 
+    @PostMapping
+    public ResponseEntity<Theme> createTheme(@RequestBody Theme theme) {
+        return ResponseEntity.ok(themeService.createTheme(theme));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTheme(@PathVariable Long id) {
+        if (themeService.deleteTheme(id)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }
