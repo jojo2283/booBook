@@ -17,4 +17,21 @@ public class GenreService {
 
         return genreRepository.findAll();
     }
+
+    public Genre createGenre(Genre genre) {
+        return genreRepository.save(genre);
+    }
+
+
+    public boolean deleteGenre(Long id) {
+        Genre genre = genreRepository.findById(id).orElse(null);
+
+        if (genre == null) {
+            return false;
+        }
+
+        genreRepository.deleteById(id);
+
+        return true;
+    }
 }

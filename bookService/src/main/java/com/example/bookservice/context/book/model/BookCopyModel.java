@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BookCopyModel {
     private Long id;
+    private Long bookId;
     private Long libraryId; // ID библиотеки, где находится копия
     private String inventoryNumber; // Инвентарный номер
     private Boolean available; // Доступность копии
@@ -19,7 +20,8 @@ public class BookCopyModel {
     public static BookCopyModel toModel(BookCopy copy) {
         BookCopyModel model = new BookCopyModel();
         model.setId(copy.getId());
-//        model.setLibraryId(copy.getLibrary().getId()); // Связанная библиотека
+        model.setBookId(copy.getBook().getId());
+        model.setLibraryId(copy.getLibrary().getId()); // Связанная библиотека
         model.setInventoryNumber(copy.getInventoryNumber());
         model.setAvailable(copy.getAvailable());
         return model;

@@ -7,5 +7,7 @@ public interface Endpoints {
 
     String PUBLISHER = "/api/v1/library/publishers";
     String AUTHORS = "/api/v1/library/authors";
+    String COPIES = "/api/v1/library/copies";
+
     String LIBRARY = "/api/v1/library";
 }

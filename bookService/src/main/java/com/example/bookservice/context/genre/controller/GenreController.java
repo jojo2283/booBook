@@ -6,9 +6,7 @@ import com.example.bookservice.context.genre.service.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,5 +21,18 @@ public class GenreController {
         return ResponseEntity.status(HttpStatus.OK).body(genreService.findAllGenres());
     }
 
+    @PostMapping
+    public ResponseEntity<Genre> createGenre(@RequestBody Genre genre) {
+        return ResponseEntity.ok(genreService.createGenre(genre));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteGenre(@PathVariable Long id) {
+        if (genreService.deleteGenre(id)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }

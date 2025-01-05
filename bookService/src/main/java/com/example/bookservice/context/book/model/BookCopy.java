@@ -1,5 +1,6 @@
 package com.example.bookservice.context.book.model;
 
+import com.example.bookservice.context.library.model.Library;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,9 +20,9 @@ public class BookCopy {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
-//    @ManyToOne
-//    @JoinColumn(name = "library_id", nullable = false)
-//    private Library library;
+    @ManyToOne
+    @JoinColumn(name = "library_id", nullable = false)
+    private Library library;
 
     @Column(name = "inventory_number", nullable = false)
     private String inventoryNumber;

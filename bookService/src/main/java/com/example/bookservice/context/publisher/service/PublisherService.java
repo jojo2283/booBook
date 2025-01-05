@@ -2,8 +2,6 @@ package com.example.bookservice.context.publisher.service;
 
 import com.example.bookservice.context.publisher.model.Publisher;
 import com.example.bookservice.context.publisher.repository.PublisherRepository;
-import com.example.bookservice.context.theme.model.Theme;
-import com.example.bookservice.context.theme.repository.ThemeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,4 +17,19 @@ public class PublisherService {
         return publisherRepository.findAll();
     }
 
+    public Publisher createPublisher(Publisher publisher) {
+        return publisherRepository.save(publisher);
+    }
+
+    public boolean deletePublisher(Long id) {
+        Publisher publisher = publisherRepository.findById(id).orElse(null);
+
+        if (publisher == null) {
+            return false;
+        }
+
+        publisherRepository.deleteById(id);
+
+        return true;
+    }
 }
