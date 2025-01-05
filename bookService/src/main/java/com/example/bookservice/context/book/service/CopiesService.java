@@ -1,10 +1,12 @@
 package com.example.bookservice.context.book.service;
 
 import com.example.bookservice.context.book.exception.BookAlreadyExistException;
+import com.example.bookservice.context.book.exception.BookNotFoundException;
 import com.example.bookservice.context.book.model.BookCopy;
 import com.example.bookservice.context.book.model.BookCopyModel;
-import com.example.bookservice.context.book.model.BookModel;
+import com.example.bookservice.context.book.repository.BookRepository;
 import com.example.bookservice.context.book.repository.CopiesRepository;
+import com.example.bookservice.context.library.repository.LibraryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CopiesService {
     private final CopiesRepository copiesRepository;
+    private final BookRepository bookRepository;
+    private final LibraryRepository libraryRepository;
 
     public List<BookCopyModel> findBooks(Long bookId, Long libraryId) {
         List<BookCopy> copiesList;
@@ -55,4 +59,14 @@ public class CopiesService {
         return BookCopyModel.toModel(copiesRepository.save(book));
     }
 
+    public BookCopyModel updateCopy(Long id, BookCopyModel bookCopy) {
+        BookCopy oldBook = copiesRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
+       
+        oldBook.setAvailable(bookCopy.getAvailable());
+        oldBook.setBook(bookRepository.findById(bookCopy.getBookId()).orElseThrow());
+        oldBook.setLibrary(libraryRepository.findById(bookCopy.getLibraryId()).orElseThrow());
+        oldBook.setInventoryNumber(bookCopy.getInventoryNumber());
+        return BookCopyModel.toModel(copiesRepository.save(oldBook));
+
+    }
 }
