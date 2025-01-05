@@ -1,7 +1,10 @@
 package com.example.bookservice.context.book.controller;
 
 import com.example.bookservice.api.Endpoints;
+import com.example.bookservice.context.book.model.Book;
+import com.example.bookservice.context.book.model.BookCopy;
 import com.example.bookservice.context.book.model.BookCopyModel;
+import com.example.bookservice.context.book.model.BookModel;
 import com.example.bookservice.context.book.service.CopiesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,11 @@ public class CopiesController {
     @GetMapping
     public ResponseEntity<List<BookCopyModel>> findBooks(@RequestParam(required = false) Long bookId,@RequestParam(required = false) Long libraryId) {
         return ResponseEntity.ok(copiesService.findBooks(bookId,libraryId));
+    }
+
+    @PostMapping
+    public ResponseEntity<BookCopyModel> createBook(@RequestBody BookCopy bookCopyook) {
+        return ResponseEntity.ok(copiesService.createBook(bookCopyook));
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCopies(@PathVariable Long id) {

@@ -1,7 +1,9 @@
 package com.example.bookservice.context.book.service;
 
+import com.example.bookservice.context.book.exception.BookAlreadyExistException;
 import com.example.bookservice.context.book.model.BookCopy;
 import com.example.bookservice.context.book.model.BookCopyModel;
+import com.example.bookservice.context.book.model.BookModel;
 import com.example.bookservice.context.book.repository.CopiesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,4 +45,14 @@ public class CopiesService {
 
         return true;
     }
+
+    public BookCopyModel createBook(BookCopy book) {
+        BookCopy bookFromIN = copiesRepository.findByInventoryNumber(book.getInventoryNumber());
+        if (bookFromIN != null) {
+            throw new BookAlreadyExistException("Book copy already exist");
+        }
+
+        return BookCopyModel.toModel(copiesRepository.save(book));
+    }
+
 }

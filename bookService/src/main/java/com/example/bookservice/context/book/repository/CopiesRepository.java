@@ -11,4 +11,6 @@ public interface CopiesRepository extends JpaRepository< BookCopy,Long> {
     List<BookCopy> findByLibraryId(Long libraryId);
     List<BookCopy> findByBookId(Long bookId);
 
+    BookCopy findByInventoryNumber(String inventoryNumber);
+
 }
