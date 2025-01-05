@@ -22,7 +22,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/booBook_realm
+          issuer-uri: https://keycloak.itmo.dmitriy.space/realms/boobook
 #keycloak:
 #  auth-server-url: http://localhost:8080
 #  realm: booBook_realm
