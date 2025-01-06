@@ -1,9 +1,9 @@
 package com.example.operationservice.config;
 
 import com.example.operationservice.context.user.CustomUserDetails;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -11,7 +11,6 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,6 +18,7 @@ import java.util.stream.Collectors;
 public class JwtTokenUtil {
 
     public static CustomUserDetails parseToken(String token, String publicKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
+
         byte[] keyBytes = Base64.getDecoder().decode(publicKey);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
