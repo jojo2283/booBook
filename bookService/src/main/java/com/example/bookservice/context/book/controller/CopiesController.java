@@ -1,7 +1,6 @@
 package com.example.bookservice.context.book.controller;
 
 import com.example.bookservice.api.Endpoints;
-import com.example.bookservice.context.book.model.BookCopy;
 import com.example.bookservice.context.book.model.BookCopyModel;
 import com.example.bookservice.context.book.service.CopiesService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,7 @@ public class CopiesController {
     }
 
     @PostMapping
-    public ResponseEntity<BookCopyModel> createBook(@RequestBody BookCopy bookCopyook) {
+    public ResponseEntity<BookCopyModel> createBook(@RequestBody BookCopyModel bookCopyook) {
         return ResponseEntity.ok(copiesService.createBook(bookCopyook));
     }
 

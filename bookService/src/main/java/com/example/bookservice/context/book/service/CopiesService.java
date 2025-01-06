@@ -50,18 +50,26 @@ public class CopiesService {
         return true;
     }
 
-    public BookCopyModel createBook(BookCopy book) {
+    public BookCopyModel createBook(BookCopyModel book) {
         BookCopy bookFromIN = copiesRepository.findByInventoryNumber(book.getInventoryNumber());
         if (bookFromIN != null) {
             throw new BookAlreadyExistException("Book copy already exist");
         }
+        BookCopy newBook = new BookCopy();
 
-        return BookCopyModel.toModel(copiesRepository.save(book));
+
+        newBook.setAvailable(book.getAvailable());
+        newBook.setBook(bookRepository.findById(book.getBookId()).orElseThrow());
+        newBook.setLibrary(libraryRepository.findById(book.getLibraryId()).orElseThrow());
+        newBook.setInventoryNumber(book.getInventoryNumber());
+        return BookCopyModel.toModel(copiesRepository.save(newBook));
+
+
     }
 
     public BookCopyModel updateCopy(Long id, BookCopyModel bookCopy) {
         BookCopy oldBook = copiesRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
-       
+
         oldBook.setAvailable(bookCopy.getAvailable());
         oldBook.setBook(bookRepository.findById(bookCopy.getBookId()).orElseThrow());
         oldBook.setLibrary(libraryRepository.findById(bookCopy.getLibraryId()).orElseThrow());
