@@ -1,0 +1,25 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: operationService
+  datasource:
+    url: jdbc:postgresql://dmitriy.space:5100/boobook
+    username: admin
+    password: admin
+  jpa:
+    properties:
+      hibernate:
+        jdbc.lob.non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      temp:
+        use_jdbc_metadata_defaults: false
+
+      ddl-auto: update
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/booBook_realm
