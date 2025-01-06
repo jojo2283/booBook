@@ -17,11 +17,10 @@ public class UserController {
 
     @GetMapping("/user-info")
     public UserInfoResponse getUserInfo() throws NoSuchAlgorithmException, InvalidKeySpecException {
-        // Получение текущей аутентификации
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null) {
-            // Приведение principal к CustomUserDetails
+
             Jwt jwt = (Jwt) authentication.getPrincipal();
             CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue(), publicKey);
 
