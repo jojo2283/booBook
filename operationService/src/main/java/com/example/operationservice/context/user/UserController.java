@@ -57,29 +57,6 @@ public class UserController {
             this.roles = roles;
         }
 
-        // Getters and setters
-        public String getId() {
-            return id;
-        }
 
-        public String getUsername() {
-            return username;
-        }
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public String getRoles() {
-            return roles;
-        }
     }
 }
