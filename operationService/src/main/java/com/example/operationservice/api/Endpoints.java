@@ -1,7 +1,6 @@
-package com.example.bookservice.api;
+package com.example.operationservice.api;
 
 public interface Endpoints {
-    String Base = "/api/v1";
     String GENRES = "/api/v1/library/genres";
     String THEME = "/api/v1/library/themes";
 
@@ -11,4 +10,7 @@ public interface Endpoints {
     String COPIES = "/api/v1/library/copies";
 
     String LIBRARY = "/api/v1/library";
+    String TRANSACTION = "/api/v1/operations";
+
+    String REVIEWS = "/api/v1/library/reviews";
 }
