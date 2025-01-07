@@ -10,6 +10,7 @@ public interface Endpoints {
     String COPIES = "/api/v1/library/copies";
 
     String LIBRARY = "/api/v1/library";
+    String TRANSACTION = "/api/v1/operations";
 
     String REVIEWS = "/api/v1/library/reviews";
 }

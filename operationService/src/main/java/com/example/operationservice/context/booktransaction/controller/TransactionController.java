@@ -1,0 +1,30 @@
+package com.example.operationservice.context.booktransaction.controller;
+
+import com.example.operationservice.api.Endpoints;
+import com.example.operationservice.context.booktransaction.model.BookTransaction;
+import com.example.operationservice.context.booktransaction.service.TransactionService;
+import com.example.operationservice.context.library.model.LibraryRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(Endpoints.TRANSACTION)
+@RequiredArgsConstructor
+public class TransactionController {
+    private final TransactionService transactionService;
+
+    @GetMapping
+    public ResponseEntity<List<BookTransaction>> getAllRequests(@RequestParam Long libraryId) {
+        return ResponseEntity.ok(transactionService.getRequests(libraryId));
+    }
+
+    @PostMapping("/books/{id}/reserve")
+    public ResponseEntity<BookTransaction> reservBook(@PathVariable Long id, @RequestBody LibraryRequest library) {
+        return ResponseEntity.ok(transactionService.reserve(id, library));
+    }
+
+
+}

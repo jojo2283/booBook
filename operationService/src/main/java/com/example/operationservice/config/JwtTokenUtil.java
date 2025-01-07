@@ -17,12 +17,18 @@ import java.util.stream.Collectors;
 
 public class JwtTokenUtil {
 
-    public static CustomUserDetails parseToken(String token, String publicKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public static CustomUserDetails parseToken(String token)  {
+        final String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvKjA4XwQW+giaioOaw/HsKjGlgIML1ybySGQ/RZFH5zL3tY4IG5lJqbAFlKGWhnRIprEn2tM1ZQV/TudNjHHHoUfN2kJTohNOQ3G6KzQ1UWqVjkE5Jwl5eg9rPzzO4MjQQkaY63PVk2OBs9bY1GA/cLsIp1HGLiH+d03PR6GkDrzdv8zH8bxx2xRo6tNgBAmJWDbRqa/GU28NxcliX7QqsFLa9BMI7u9EZfx284HAnElndtz1wZP5q5R7fXKvfsVT7KbjAdfB6aHnPeYYAYZYx2N9H7wz/u8TYFqDS699sY+02XQnBqq9gy+j70uQZw+I6NZwsaViMKm4H1YHuixfwIDAQAB"; // Получите ключ от Keycloak
 
         byte[] keyBytes = Base64.getDecoder().decode(publicKey);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        PublicKey publicKeyNew = keyFactory.generatePublic(keySpec);
+        PublicKey publicKeyNew = null;
+        try {
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+             publicKeyNew = keyFactory.generatePublic(keySpec);
+        }catch (NoSuchAlgorithmException | InvalidKeySpecException ex ){
+            throw  new RuntimeException();
+        }
         Claims claims = Jwts.parser()
                 .verifyWith(publicKeyNew)
                 .build()

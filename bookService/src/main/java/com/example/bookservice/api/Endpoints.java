@@ -1,6 +1,7 @@
 package com.example.bookservice.api;
 
 public interface Endpoints {
+    String Base = "/api/v1";
     String GENRES = "/api/v1/library/genres";
     String THEME = "/api/v1/library/themes";
 

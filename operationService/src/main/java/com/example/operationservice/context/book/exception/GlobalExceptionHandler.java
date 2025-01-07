@@ -13,6 +13,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ex.getMessage());
     }
+    @ExceptionHandler(BookCopyNotFoundInLibraryException.class)
+    public ResponseEntity<String> handleBookCopyNotFound(BookNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
+    }
 
     @ExceptionHandler(BookAlreadyExistException.class)
     public ResponseEntity<String> handleBookExist(BookAlreadyExistException ex) {

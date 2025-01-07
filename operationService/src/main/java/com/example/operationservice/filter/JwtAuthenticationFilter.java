@@ -21,7 +21,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvKjA4XwQW+giaioOaw/HsKjGlgIML1ybySGQ/RZFH5zL3tY4IG5lJqbAFlKGWhnRIprEn2tM1ZQV/TudNjHHHoUfN2kJTohNOQ3G6KzQ1UWqVjkE5Jwl5eg9rPzzO4MjQQkaY63PVk2OBs9bY1GA/cLsIp1HGLiH+d03PR6GkDrzdv8zH8bxx2xRo6tNgBAmJWDbRqa/GU28NxcliX7QqsFLa9BMI7u9EZfx284HAnElndtz1wZP5q5R7fXKvfsVT7KbjAdfB6aHnPeYYAYZYx2N9H7wz/u8TYFqDS699sY+02XQnBqq9gy+j70uQZw+I6NZwsaViMKm4H1YHuixfwIDAQAB"; // Получите ключ от Keycloak
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -33,7 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = authHeader.substring(7);
 
             try {
-                CustomUserDetails userDetails = JwtTokenUtil.parseToken(token, publicKey);
+                CustomUserDetails userDetails = JwtTokenUtil.parseToken(token);
 
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
