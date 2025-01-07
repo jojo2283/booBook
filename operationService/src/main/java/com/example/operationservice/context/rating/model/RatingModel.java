@@ -9,6 +9,8 @@ import lombok.Setter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,6 +22,7 @@ public class RatingModel {
     private Integer ratingValue;
     private String review;
     private Long bookId;
+    private LocalDateTime time;
 
     public static RatingModel toModel(Rating rating) {
 
@@ -32,6 +35,7 @@ public class RatingModel {
         model.setBook(BookModel.toModel(rating.getBook()));
         model.setRatingValue(rating.getRatingValue());
         model.setReview(rating.getReview());
+        model.setTime(rating.getTime());
         return model;
     }
 

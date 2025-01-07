@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "rating")
 @Data
@@ -30,4 +32,6 @@ public class Rating {
 
     @Column(name = "review")
     private String review;
+
+    private LocalDateTime time;
 }
