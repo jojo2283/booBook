@@ -13,10 +13,12 @@ public class BookTransactionModel {
     private String userId;
     private LocalDateTime borrowDate;
     private LocalDateTime returnDate;
+    private LocalDateTime creationDate;
     private Boolean returned;
     private String email;
     private String firstName;
     private String lastName;
+    private String status;
 
     public static BookTransactionModel toModel(BookTransaction bookTransaction) {
         BookTransactionModel model = new BookTransactionModel();
@@ -29,6 +31,8 @@ public class BookTransactionModel {
         model.setEmail(bookTransaction.getEmail());
         model.setFirstName(bookTransaction.getFirstName());
         model.setLastName(bookTransaction.getLastName());
+        model.setStatus(bookTransaction.getStatus().toString());
+        model.setCreationDate(bookTransaction.getCreationDate());
         return model;
     }
 }
