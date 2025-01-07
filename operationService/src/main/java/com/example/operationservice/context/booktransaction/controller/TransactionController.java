@@ -31,6 +31,10 @@ public class TransactionController {
     public ResponseEntity<BookTransactionModel> approveRequest(@PathVariable Long id) {
         return ResponseEntity.ok(transactionService.approve(id));
     }
+    @PostMapping("/decline/{id}")
+    public ResponseEntity<BookTransactionModel> declineRequest(@PathVariable Long id) {
+        return ResponseEntity.ok(transactionService.decline(id));
+    }
 
 
 }

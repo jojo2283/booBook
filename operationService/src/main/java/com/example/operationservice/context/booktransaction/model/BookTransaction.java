@@ -38,4 +38,6 @@ public class BookTransaction {
     private String email;
     private String firstName;
     private String lastName;
+    private LocalDateTime creationDate;
+    private Status status;
 }

@@ -7,6 +7,7 @@ import com.example.operationservice.context.book.repository.BookRepository;
 import com.example.operationservice.context.book.repository.CopiesRepository;
 import com.example.operationservice.context.booktransaction.model.BookTransaction;
 import com.example.operationservice.context.booktransaction.model.BookTransactionModel;
+import com.example.operationservice.context.booktransaction.model.Status;
 import com.example.operationservice.context.booktransaction.model.TransactionResponse;
 import com.example.operationservice.context.booktransaction.repository.BookTransactionRepository;
 import com.example.operationservice.context.library.model.LibraryRequest;
@@ -34,7 +35,6 @@ public class TransactionService {
 
     public BookTransactionModel reserve(Long id, LibraryRequest library) {
         BookTransaction transaction = new BookTransaction();
-//        Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
         List<BookCopy> bookCopyList = copiesRepository.findByBookIdAndLibraryId(id, library.getLibraryId());
         if (bookCopyList.isEmpty()) {
             throw new BookCopyNotFoundInLibraryException("Book copy not found in Library");
@@ -48,13 +48,17 @@ public class TransactionService {
         transaction.setEmail(userDetails.getEmail());
         transaction.setFirstName(userDetails.getFirstName());
         transaction.setLastName(userDetails.getLastName());
+        transaction.setStatus(Status.PENDING);
+        transaction.setCreationDate(LocalDateTime.now());
         return BookTransactionModel.toModel(bookTransactionRepository.save(transaction));
     }
 
     public List<TransactionResponse> getRequests(Long libraryId) {
         List<BookTransaction> res = bookTransactionRepository.findUnborrowedTransactionsByLibraryId(libraryId);
+        return res.stream()
+                .filter(bookTransaction -> bookTransaction.getStatus()!=Status.REJECTED)
+                .map(TransactionResponse::fromBookTransToResponse).collect(Collectors.toList());
 
-        return res.stream().map(TransactionResponse::fromBookTransToResponse).collect(Collectors.toList());
     }
 
     public BookTransactionModel approve(Long id) {
@@ -64,8 +68,16 @@ public class TransactionService {
         if (bookCopy != null && bookCopy.getAvailable() == Boolean.TRUE) {
             bookCopy.setAvailable(Boolean.FALSE);
             copiesRepository.save(bookCopy);
+            transaction.setStatus(Status.APPROVED);
         }
+
         return BookTransactionModel.toModel(bookTransactionRepository.save(transaction));
 
+    }
+
+    public BookTransactionModel decline(Long id) {
+        BookTransaction transaction = bookTransactionRepository.findById(id).orElse(null);
+        transaction.setStatus(Status.REJECTED);
+        return BookTransactionModel.toModel(bookTransactionRepository.save(transaction));
     }
 }
