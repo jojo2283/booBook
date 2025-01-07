@@ -12,5 +12,5 @@ public interface Endpoints {
     String LIBRARY = "/api/v1/library";
     String TRANSACTION = "/api/v1/operations";
 
-    String REVIEWS = "/api/v1/library/reviews";
+    String REVIEWS = "/api/v1/operations/reviews";
 }

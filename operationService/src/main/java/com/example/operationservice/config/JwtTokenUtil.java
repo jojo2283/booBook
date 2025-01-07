@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class JwtTokenUtil {
 
     public static CustomUserDetails parseToken(String token)  {
-        final String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvKjA4XwQW+giaioOaw/HsKjGlgIML1ybySGQ/RZFH5zL3tY4IG5lJqbAFlKGWhnRIprEn2tM1ZQV/TudNjHHHoUfN2kJTohNOQ3G6KzQ1UWqVjkE5Jwl5eg9rPzzO4MjQQkaY63PVk2OBs9bY1GA/cLsIp1HGLiH+d03PR6GkDrzdv8zH8bxx2xRo6tNgBAmJWDbRqa/GU28NxcliX7QqsFLa9BMI7u9EZfx284HAnElndtz1wZP5q5R7fXKvfsVT7KbjAdfB6aHnPeYYAYZYx2N9H7wz/u8TYFqDS699sY+02XQnBqq9gy+j70uQZw+I6NZwsaViMKm4H1YHuixfwIDAQAB"; // Получите ключ от Keycloak
+        final String publicKey =  "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsEW5Ii21UcdRVU0yk1MpqKbrclGG5A4TZopMnLX51DpPMn2SkDUNz804a5biWIujSR6UXoHZ5LvEDtyYAUp3Y4PSAk+3whRaYdeHkZKSOixgOSQUyQzOIKbd3l1ASKIHIeAhJH+2v8e7Rrl/C93N3XrFOespGcHg8xIxQVMzhEYRmSbCS4VDEGltViYFXseAleCCAzgk9KPOQ4NnMnUGiWdyFnYeqMhiua4QLxNDzSq8y6Hy6DnU6K1ZrKV1eZXq3TJN1WlCTMDajiygrosAn+p5/7MKo7nov1VMpBbFZmBFfbHgsuVbc9l2Ztas4SiHpO5NLnvKiLTuTVWPQZWUtwIDAQAB";
 
         byte[] keyBytes = Base64.getDecoder().decode(publicKey);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
