@@ -1,7 +1,6 @@
 package com.example.operationservice.context.booktransaction.controller;
 
 import com.example.operationservice.api.Endpoints;
-import com.example.operationservice.context.booktransaction.model.BookTransaction;
 import com.example.operationservice.context.booktransaction.model.BookTransactionModel;
 import com.example.operationservice.context.booktransaction.model.TransactionResponse;
 import com.example.operationservice.context.booktransaction.service.TransactionService;
@@ -24,7 +23,7 @@ public class TransactionController {
     }
 
     @PostMapping("/books/{id}/reserve")
-    public ResponseEntity<BookTransaction> reservBook(@PathVariable Long id, @RequestBody LibraryRequest library) {
+    public ResponseEntity<BookTransactionModel> reservBook(@PathVariable Long id, @RequestBody LibraryRequest library) {
         return ResponseEntity.ok(transactionService.reserve(id, library));
     }
 

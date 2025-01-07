@@ -32,7 +32,7 @@ public class TransactionService {
         return bookTransactionRepository.findAll();
     }
 
-    public BookTransaction reserve(Long id, LibraryRequest library) {
+    public BookTransactionModel reserve(Long id, LibraryRequest library) {
         BookTransaction transaction = new BookTransaction();
 //        Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
         List<BookCopy> bookCopyList = copiesRepository.findByBookIdAndLibraryId(id, library.getLibraryId());
@@ -48,7 +48,7 @@ public class TransactionService {
         transaction.setEmail(userDetails.getEmail());
         transaction.setFirstName(userDetails.getFirstName());
         transaction.setLastName(userDetails.getLastName());
-        return bookTransactionRepository.save(transaction);
+        return BookTransactionModel.toModel(bookTransactionRepository.save(transaction));
     }
 
     public List<TransactionResponse> getRequests(Long libraryId) {
