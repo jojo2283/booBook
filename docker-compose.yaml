@@ -10,7 +10,7 @@ services:
         - --cpus=0.5
         - --memory=300M
     ports:
-      - "5110:8080"
+      - "5110:8083"
     networks:
       - app-network
     # Ограничения ресурсов при работе
