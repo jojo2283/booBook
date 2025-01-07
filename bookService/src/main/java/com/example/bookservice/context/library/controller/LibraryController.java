@@ -1,6 +1,7 @@
 package com.example.bookservice.context.library.controller;
 
 import com.example.bookservice.api.Endpoints;
+import com.example.bookservice.context.library.model.Library;
 import com.example.bookservice.context.library.model.LibraryResponse;
 import com.example.bookservice.context.library.service.LibraryService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,11 @@ import java.util.List;
 @RequestMapping(Endpoints.LIBRARY)
 public class LibraryController {
     private final LibraryService libraryService;
+
+    @GetMapping("/allLibraries")
+    public ResponseEntity<List<Library>> getAllLibraries() {
+        return ResponseEntity.ok(libraryService.getLibrary());
+    }
 
     @GetMapping("/allLibraries/{bookId}")
     public ResponseEntity<List<LibraryResponse>> findBookCopyInlabrary(@PathVariable Long bookId) {
