@@ -1,11 +1,12 @@
 package com.example.operationservice.context.booktransaction.model;
 
+import com.example.operationservice.context.book.model.BookCopy;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "book_transaction")
@@ -17,20 +18,24 @@ public class BookTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "book_copy_id", nullable = false)
-    private Integer bookCopyId;
+    @ManyToOne
+    @JoinColumn(name = "book_copy_id", nullable = false)
+    private BookCopy BookCopy;
+
 
     @Column(name = "user_id")
     private String userId;
 
     @Column(name = "borrow_date")
-    private LocalDate borrowDate;
+    private LocalDateTime borrowDate;
 
     @Column(name = "return_date")
-    private LocalDate returnDate;
+    private LocalDateTime returnDate;
 
     @Column(name = "returned", nullable = false)
     private Boolean returned = false;
 
     private String email;
+    private String firstName;
+    private String lastName;
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public interface BookTransactionRepository extends JpaRepository<BookTransaction,Long> {
 
     @Query("SELECT bt FROM BookTransaction bt " +
-            "JOIN BookCopy bc ON bt.bookCopyId = bc.id " +
+            "JOIN bt.BookCopy bc " +
             "WHERE bt.borrowDate IS NULL AND bc.library.id = :libraryId")
     List<BookTransaction> findUnborrowedTransactionsByLibraryId(@Param("libraryId") Long libraryId);
 }
