@@ -7,13 +7,11 @@ import com.example.operationservice.context.rating.model.RatingModel;
 import com.example.operationservice.context.rating.repository.RatingRepository;
 import com.example.operationservice.context.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +33,7 @@ public class RatingService {
         return null;
     }
 
-    public RatingModel createReview(RatingModel rating) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public RatingModel createReview(RatingModel rating) {
 
 
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -45,6 +43,7 @@ public class RatingService {
         newRating.setReview(rating.getReview());
         newRating.setUserId(userDetails.getId());
         newRating.setBook(bookRepository.findById(rating.getBookId()).orElseThrow());
+        newRating.setTime(LocalDateTime.now());
         return RatingModel.toModel(ratingRepository.save(newRating));
     }
 }
