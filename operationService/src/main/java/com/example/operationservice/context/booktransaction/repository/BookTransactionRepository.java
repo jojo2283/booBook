@@ -9,12 +9,18 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BookTransactionRepository extends JpaRepository<BookTransaction,Long> {
+public interface BookTransactionRepository extends JpaRepository<BookTransaction, Long> {
 
     @Query("SELECT bt FROM BookTransaction bt " +
-            "JOIN bt.BookCopy bc " +
-            "WHERE bt.borrowDate IS NULL AND bc.library.id = :libraryId")
+            "JOIN bt.bookCopy bc " +
+            "WHERE bc.library.id = :libraryId AND bt.status = 'PENDING'")
     List<BookTransaction> findUnborrowedTransactionsByLibraryId(@Param("libraryId") Long libraryId);
+
+
+    @Query("SELECT bt FROM BookTransaction bt " +
+            "JOIN bt.bookCopy bc " +
+            "WHERE bc.id = :bookCopyId AND bt.status = 'APPROVED'")
+    BookTransaction findByBookCopyIdAndStatusApproved(@Param("bookCopyId") Long bookCopyId);
 }
 
 

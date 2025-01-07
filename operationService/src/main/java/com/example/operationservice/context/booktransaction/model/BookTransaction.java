@@ -20,7 +20,7 @@ public class BookTransaction {
 
     @ManyToOne
     @JoinColumn(name = "book_copy_id", nullable = false)
-    private BookCopy BookCopy;
+    private BookCopy bookCopy;
 
 
     @Column(name = "user_id")
@@ -39,5 +39,7 @@ public class BookTransaction {
     private String firstName;
     private String lastName;
     private LocalDateTime creationDate;
+
+    @Enumerated(EnumType.STRING)
     private Status status;
 }

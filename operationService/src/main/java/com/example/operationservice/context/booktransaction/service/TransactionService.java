@@ -1,20 +1,16 @@
 package com.example.operationservice.context.booktransaction.service;
 
-import com.example.operationservice.config.JwtTokenUtil;
 import com.example.operationservice.context.book.exception.BookCopyNotFoundInLibraryException;
 import com.example.operationservice.context.book.model.BookCopy;
 import com.example.operationservice.context.book.repository.BookRepository;
 import com.example.operationservice.context.book.repository.CopiesRepository;
-import com.example.operationservice.context.booktransaction.model.BookTransaction;
-import com.example.operationservice.context.booktransaction.model.BookTransactionModel;
-import com.example.operationservice.context.booktransaction.model.Status;
-import com.example.operationservice.context.booktransaction.model.TransactionResponse;
+import com.example.operationservice.context.booktransaction.exception.BookNotAprrovedYetException;
+import com.example.operationservice.context.booktransaction.model.*;
 import com.example.operationservice.context.booktransaction.repository.BookTransactionRepository;
 import com.example.operationservice.context.library.model.LibraryRequest;
 import com.example.operationservice.context.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -41,9 +37,13 @@ public class TransactionService {
         }
         BookCopy book = bookCopyList.get(0);
         transaction.setBookCopy(book);
+//
+//        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
 
-        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
+
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         transaction.setUserId(userDetails.getId());
         transaction.setEmail(userDetails.getEmail());
         transaction.setFirstName(userDetails.getFirstName());
@@ -56,7 +56,7 @@ public class TransactionService {
     public List<TransactionResponse> getRequests(Long libraryId) {
         List<BookTransaction> res = bookTransactionRepository.findUnborrowedTransactionsByLibraryId(libraryId);
         return res.stream()
-                .filter(bookTransaction -> bookTransaction.getStatus()!=Status.REJECTED)
+                .filter(bookTransaction -> bookTransaction.getStatus() != Status.REJECTED)
                 .map(TransactionResponse::fromBookTransToResponse).collect(Collectors.toList());
 
     }
@@ -79,5 +79,17 @@ public class TransactionService {
         BookTransaction transaction = bookTransactionRepository.findById(id).orElse(null);
         transaction.setStatus(Status.REJECTED);
         return BookTransactionModel.toModel(bookTransactionRepository.save(transaction));
+    }
+
+    public BookTransactionModel returnBack(ReturnRequest request) {
+        BookCopy bookCopy = copiesRepository.findByInventoryNumber(request.getInvNumber());
+        BookTransaction bookTransaction = bookTransactionRepository.findByBookCopyIdAndStatusApproved(bookCopy.getId());
+        if (bookTransaction == null) {
+            throw new BookNotAprrovedYetException("book not aprroved yet");
+        }
+        bookTransaction.setStatus(Status.RETURNED);
+        bookTransaction.setReturnDate(LocalDateTime.now());
+
+        return BookTransactionModel.toModel(bookTransactionRepository.save(bookTransaction));
     }
 }

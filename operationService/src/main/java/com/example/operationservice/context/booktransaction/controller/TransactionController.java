@@ -2,6 +2,7 @@ package com.example.operationservice.context.booktransaction.controller;
 
 import com.example.operationservice.api.Endpoints;
 import com.example.operationservice.context.booktransaction.model.BookTransactionModel;
+import com.example.operationservice.context.booktransaction.model.ReturnRequest;
 import com.example.operationservice.context.booktransaction.model.TransactionResponse;
 import com.example.operationservice.context.booktransaction.service.TransactionService;
 import com.example.operationservice.context.library.model.LibraryRequest;
@@ -34,6 +35,11 @@ public class TransactionController {
     @PostMapping("/decline/{id}")
     public ResponseEntity<BookTransactionModel> declineRequest(@PathVariable Long id) {
         return ResponseEntity.ok(transactionService.decline(id));
+    }
+
+    @PostMapping("/return")
+    public ResponseEntity<BookTransactionModel> returnBook(@RequestBody ReturnRequest request) {
+        return ResponseEntity.ok(transactionService.returnBack(request));
     }
 
 

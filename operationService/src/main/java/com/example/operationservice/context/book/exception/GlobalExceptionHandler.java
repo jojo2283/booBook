@@ -1,5 +1,6 @@
 package com.example.operationservice.context.book.exception;
 
+import com.example.operationservice.context.booktransaction.exception.BookNotAprrovedYetException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,8 +15,13 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
     @ExceptionHandler(BookCopyNotFoundInLibraryException.class)
-    public ResponseEntity<String> handleBookCopyNotFound(BookNotFoundException ex) {
+    public ResponseEntity<String> handleBookCopyNotFound(BookCopyNotFoundInLibraryException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
+    }
+    @ExceptionHandler(BookNotAprrovedYetException.class)
+    public ResponseEntity<String> handleBookCopyNotFound(BookNotAprrovedYetException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(ex.getMessage());
     }
 
