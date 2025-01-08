@@ -66,11 +66,14 @@ public class TransactionService {
     public BookTransactionModel approve(Long id) {
         BookTransaction transaction = bookTransactionRepository.findById(id).orElse(null);
         transaction.setBorrowDate(LocalDateTime.now());
-        BookCopy bookCopy = copiesRepository.findById(transaction.getBookCopy().getId()).orElse(null);
+        BookCopy bookCopy = transaction.getBookCopy();
         if (bookCopy != null && bookCopy.getAvailable() == Boolean.TRUE) {
             bookCopy.setAvailable(Boolean.FALSE);
-            copiesRepository.save(bookCopy);
             transaction.setStatus(Status.APPROVED);
+            copiesRepository.save(bookCopy);
+
+        }else{
+            throw new RuntimeException();
         }
 
         return BookTransactionModel.toModel(bookTransactionRepository.save(transaction));

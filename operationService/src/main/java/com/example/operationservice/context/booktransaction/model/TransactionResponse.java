@@ -19,6 +19,7 @@ public class TransactionResponse {
     private String title;
     private List<AuthorModel> author;
     private String inventoryId;
+    private String status;
 
     public static TransactionResponse fromBookTransToResponse(BookTransaction transaction) {
         TransactionResponse res = new TransactionResponse();
@@ -29,7 +30,7 @@ public class TransactionResponse {
         res.setInventoryId(transaction.getBookCopy().getInventoryNumber());
         res.setAuthor(transaction.getBookCopy().getBook().getAuthors().stream().map(AuthorModel::toModel).collect(Collectors.toList()));
         res.setTitle(transaction.getBookCopy().getBook().getTitle());
-
+        res.setStatus(transaction.getStatus().toString());
         return res;
     }
 }
