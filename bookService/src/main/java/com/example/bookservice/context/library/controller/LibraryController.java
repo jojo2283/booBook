@@ -6,10 +6,7 @@ import com.example.bookservice.context.library.model.LibraryResponse;
 import com.example.bookservice.context.library.service.LibraryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +24,9 @@ public class LibraryController {
     @GetMapping("/allLibraries/{bookId}")
     public ResponseEntity<List<LibraryResponse>> findBookCopyInlabrary(@PathVariable Long bookId) {
         return ResponseEntity.ok(libraryService.findCopies(bookId));
+    }
+    @PostMapping("/new")
+    public ResponseEntity<Library> createLibrary(@RequestBody Library library) {
+        return ResponseEntity.ok(libraryService.create(library));
     }
 }

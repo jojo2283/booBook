@@ -7,7 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ReturnRequest {
-    private  String  invNumber;
-
+public class Reason {
+    private String comment;
 }

@@ -80,9 +80,10 @@ public class TransactionService {
 
     }
 
-    public BookTransactionModel decline(Long id) {
+    public BookTransactionModel decline(Long id,Reason reason) {
         BookTransaction transaction = bookTransactionRepository.findById(id).orElse(null);
         transaction.setStatus(Status.REJECTED);
+        transaction.setComment(reason.getComment());
         return BookTransactionModel.toModel(bookTransactionRepository.save(transaction));
     }
 

@@ -19,6 +19,7 @@ public class BookTransactionModel {
     private String firstName;
     private String lastName;
     private String status;
+    private String comment;
 
     public static BookTransactionModel toModel(BookTransaction bookTransaction) {
         BookTransactionModel model = new BookTransactionModel();
@@ -33,6 +34,7 @@ public class BookTransactionModel {
         model.setLastName(bookTransaction.getLastName());
         model.setStatus(bookTransaction.getStatus().toString());
         model.setCreationDate(bookTransaction.getCreationDate());
+        model.setComment(bookTransaction.getComment());
         return model;
     }
 }

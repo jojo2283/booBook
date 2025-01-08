@@ -42,4 +42,7 @@ public class BookTransaction {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @Column(columnDefinition = "TEXT")
+    private String comment;
 }

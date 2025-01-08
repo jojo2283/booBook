@@ -27,4 +27,8 @@ public class LibraryService {
     public List<Library> getLibrary() {
         return libraryRepository.findAll();
     }
+
+    public Library create(Library library) {
+        return libraryRepository.save(library);
+    }
 }
