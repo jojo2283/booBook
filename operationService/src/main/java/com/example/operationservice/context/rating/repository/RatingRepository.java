@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface RatingRepository extends JpaRepository<Rating, Long> {
     Optional<List<Rating>> findAllByBookId(Long bookId);
+
+
 }

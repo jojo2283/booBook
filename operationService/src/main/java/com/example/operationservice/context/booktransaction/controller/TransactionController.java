@@ -42,6 +42,10 @@ public class TransactionController {
     public ResponseEntity<BookTransactionModel> returnBook(@RequestBody ReturnRequest request) {
         return ResponseEntity.ok(transactionService.returnBack(request));
     }
+    @PostMapping("/transaction/cancel/{id}")
+    public ResponseEntity<Void> cancel(@PathVariable Long id) {
+        return ResponseEntity.ok(transactionService.cancel(id));
+    }
 
 
 }

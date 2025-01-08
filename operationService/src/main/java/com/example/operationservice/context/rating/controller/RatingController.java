@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 @RestController
@@ -29,7 +27,7 @@ public class RatingController {
     }
 
     @PostMapping
-    public ResponseEntity<RatingModel> newReview(@RequestBody RatingModel rating) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public ResponseEntity<RatingModel> newReview(@RequestBody RatingModel rating) {
         return ResponseEntity.ok(ratingService.createReview(rating));
     }
 }

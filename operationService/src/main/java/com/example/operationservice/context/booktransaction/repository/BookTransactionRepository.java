@@ -21,6 +21,8 @@ public interface BookTransactionRepository extends JpaRepository<BookTransaction
             "JOIN bt.bookCopy bc " +
             "WHERE bc.id = :bookCopyId AND bt.status = 'APPROVED'")
     BookTransaction findByBookCopyIdAndStatusApproved(@Param("bookCopyId") Long bookCopyId);
+
+
 }
 
 

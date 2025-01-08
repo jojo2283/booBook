@@ -3,7 +3,6 @@ package com.example.operationservice.context.booktransaction.service;
 import com.example.operationservice.config.JwtTokenUtil;
 import com.example.operationservice.context.book.exception.BookCopyNotFoundInLibraryException;
 import com.example.operationservice.context.book.model.BookCopy;
-import com.example.operationservice.context.book.repository.BookRepository;
 import com.example.operationservice.context.book.repository.CopiesRepository;
 import com.example.operationservice.context.booktransaction.exception.BookNotAprrovedYetException;
 import com.example.operationservice.context.booktransaction.model.*;
@@ -23,13 +22,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TransactionService {
     private final BookTransactionRepository bookTransactionRepository;
-    private final BookRepository bookRepository;
     private final CopiesRepository copiesRepository;
 
-
-    public List<BookTransaction> getAll() {
-        return bookTransactionRepository.findAll();
-    }
 
     public BookTransactionModel reserve(Long id, LibraryRequest library) {
         BookTransaction transaction = new BookTransaction();
@@ -72,7 +66,7 @@ public class TransactionService {
             transaction.setStatus(Status.APPROVED);
             copiesRepository.save(bookCopy);
 
-        }else{
+        } else {
             throw new RuntimeException();
         }
 
@@ -80,7 +74,7 @@ public class TransactionService {
 
     }
 
-    public BookTransactionModel decline(Long id,Reason reason) {
+    public BookTransactionModel decline(Long id, Reason reason) {
         BookTransaction transaction = bookTransactionRepository.findById(id).orElse(null);
         transaction.setStatus(Status.REJECTED);
         transaction.setComment(reason.getComment());
@@ -97,5 +91,15 @@ public class TransactionService {
         bookTransaction.setReturnDate(LocalDateTime.now());
 
         return BookTransactionModel.toModel(bookTransactionRepository.save(bookTransaction));
+    }
+
+    public Void cancel(Long id) {
+        BookTransaction bookTransaction = bookTransactionRepository.findById(id).orElseThrow(() -> new BookCopyNotFoundInLibraryException("no such transaction"));
+        if (bookTransaction.getStatus() == Status.PENDING) {
+            bookTransactionRepository.delete(bookTransaction);
+            return null;
+        } else {
+            throw new RuntimeException("status not pending");
+        }
     }
 }
