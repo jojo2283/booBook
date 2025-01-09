@@ -37,23 +37,23 @@ public class BookCopyCsvService {
                 String isbn = record.get("isbn");
                 Long libraryId = Long.parseLong(record.get("libraryId"));
 
-                // Поиск книги по ISBN
+
                 Book book = bookRepository.findBookByISBN(isbn);
                 if (book == null) {
                     throw new IllegalArgumentException("Book not found for ISBN: " + isbn);
                 }
-                // Поиск библиотеки по ID
+
                 Library library = libraryRepository.findById(libraryId)
                         .orElseThrow(() -> new IllegalArgumentException("Library not found for ID: " + libraryId));
 
-                // Создание экземпляра BookCopy
+
                 BookCopy bookCopy = new BookCopy();
                 bookCopy.setInventoryNumber(inventoryNumber);
                 bookCopy.setAvailable(available);
                 bookCopy.setBook(book);
                 bookCopy.setLibrary(library);
 
-                // Сохранение в базу
+
                 bookCopyRepository.save(bookCopy);
             }
         }

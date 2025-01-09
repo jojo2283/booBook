@@ -15,7 +15,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +31,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults()) // Подключаем настройки CORS
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())) // Настраиваем OAuth2
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login", "/api/auth/registration", "/api/auth/token", "/swagger-ui/**", "/v3/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()); // Настройка доступа
         return http.build();

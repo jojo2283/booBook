@@ -28,7 +28,9 @@ dependencies {
     implementation group: 'org.jboss.logging', name: 'jboss-logging', version: '3.6.1.Final'
     implementation group: 'jakarta.persistence', name: 'jakarta.persistence-api', version: '3.2.0'
     implementation 'org.apache.commons:commons-csv:1.12.0'
-
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.6.0'
+    implementation group: 'io.swagger.core.v3', name: 'swagger-annotations', version: '2.2.23'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.8.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: '8.0.1.Final'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
