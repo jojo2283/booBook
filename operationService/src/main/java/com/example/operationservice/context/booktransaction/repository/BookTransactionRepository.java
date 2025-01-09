@@ -22,7 +22,7 @@ public interface BookTransactionRepository extends JpaRepository<BookTransaction
             "WHERE bc.id = :bookCopyId AND bt.status = 'APPROVED'")
     BookTransaction findByBookCopyIdAndStatusApproved(@Param("bookCopyId") Long bookCopyId);
 
-
+    List<BookTransaction> findByUserId(String userId);
 }
 
 

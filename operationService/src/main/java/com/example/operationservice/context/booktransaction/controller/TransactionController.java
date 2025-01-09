@@ -1,10 +1,7 @@
 package com.example.operationservice.context.booktransaction.controller;
 
 import com.example.operationservice.api.Endpoints;
-import com.example.operationservice.context.booktransaction.model.BookTransactionModel;
-import com.example.operationservice.context.booktransaction.model.Reason;
-import com.example.operationservice.context.booktransaction.model.ReturnRequest;
-import com.example.operationservice.context.booktransaction.model.TransactionResponse;
+import com.example.operationservice.context.booktransaction.model.*;
 import com.example.operationservice.context.booktransaction.service.TransactionService;
 import com.example.operationservice.context.library.model.LibraryRequest;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +19,11 @@ public class TransactionController {
     @GetMapping
     public ResponseEntity<List<TransactionResponse>> getAllRequests(@RequestParam Long libraryId) {
         return ResponseEntity.ok(transactionService.getRequests(libraryId));
+    }
+
+    @GetMapping("/readingStatus")
+    public ResponseEntity<List<Status>> getBookStatus(@RequestParam Long bookId) {
+        return ResponseEntity.ok(transactionService.getStatus(bookId));
     }
 
     @PostMapping("/books/{id}/reserve")
