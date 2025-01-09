@@ -16,6 +16,7 @@ public class BookSearchRequest {
     private Integer maxCopies;
     private Boolean available;
     private String name;
-    private String popularity; // "asc" или "desc"
-    private Double rating;
+    private String popularity;
+    private Float ratingMIN;
+    private Float ratingMAX;
 }

@@ -24,7 +24,7 @@ public class BookModel {
     private Genre genre;
     private Theme theme;
     private Publisher publisher;
-
+    private Float rating;
     public static BookModel toModel(Book book) {
         BookModel model = new BookModel();
         model.setId(book.getId());
@@ -34,6 +34,7 @@ public class BookModel {
         model.setGenre(book.getGenre());
         model.setTheme(book.getTheme());
         model.setPublisher(book.getPublisher());
+        model.setRating(book.getAverageRating());
 
         if (book.getAuthors() != null) {
             model.setAuthors(

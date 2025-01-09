@@ -59,17 +59,16 @@ public class BookService {
         } else if (request.getAvailable() != null) {
             spec = spec.and(BookSpecifications.hasNoAvailableCopies());
         }
+        if (request.getRatingMIN() != null && request.getRatingMAX()!=null){
+            spec = Specification.where(BookSpecifications.hasRatingBetween(request.getRatingMIN(), request.getRatingMAX()));
+        }
 //
 //        // Фильтрация по популярности
 //        if (request.getPopularity() != null) {
 //            spec = spec.and(BookSpecifications.hasPopularity(request.getPopularity()));
 //        }
 //
-//        // Фильтрация по рейтингу
-//        if (request.getRating() != null) {
-//            spec = spec.and(BookSpecifications.hasRating(request.getRating()));
-//        }
-//
+
 //        // Сортировка по полю
 //        if (request.getSortField() != null && !request.getSortField().trim().isEmpty()) {
 //            spec = spec.and(BookSpecifications.sortByField(request.getSortField(), request.isSortAscending()));

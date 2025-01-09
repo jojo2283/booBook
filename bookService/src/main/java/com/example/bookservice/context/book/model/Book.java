@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import java.util.List;
 
@@ -30,6 +31,10 @@ public class Book {
 
     @Column(nullable = false)
     private String ISBN;
+
+
+    @Formula("(SELECT get_average_book_rating(id))")
+    private Float averageRating;
 
     @ManyToOne
     @JoinColumn(name = "genre_id")

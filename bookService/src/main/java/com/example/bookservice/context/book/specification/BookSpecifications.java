@@ -6,10 +6,7 @@ import com.example.bookservice.context.book.model.BookCopy;
 import com.example.bookservice.context.genre.model.Genre;
 import com.example.bookservice.context.publisher.model.Publisher;
 import com.example.bookservice.context.theme.model.Theme;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
@@ -141,6 +138,17 @@ public class BookSpecifications {
                     cb.isNull(copiesJoin.get("id")),  // Нет копий (id == null)
                     cb.isFalse(copiesJoin.get("available"))  // Копия недоступна (available = false)
             );
+        };
+    }
+
+    public static Specification<Book> hasRatingBetween(Float minRating, Float maxRating) {
+        return (root, query, cb) -> {
+
+            Expression<Float> avgRating = cb.function(
+                    "get_average_book_rating", Float.class, root.get("id"));
+
+
+            return cb.between(avgRating, minRating, maxRating);
         };
     }
 
