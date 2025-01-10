@@ -34,5 +34,6 @@ public class UnifiedData {
     private LocalDateTime borrowDate;
     private String status;
     private String comment;
+    private String invNumber;
 
 }

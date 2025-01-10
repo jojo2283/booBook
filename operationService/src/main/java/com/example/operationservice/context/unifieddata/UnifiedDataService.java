@@ -39,6 +39,7 @@ public class UnifiedDataService {
                                 null,
                                 null,
                                 null,
+                                null,
                                 null
                         ))
                         .toList()
@@ -59,7 +60,8 @@ public class UnifiedDataService {
                                 transaction.getBookCopy().getLibrary(),
                                 transaction.getBorrowDate(),
                                 transaction.getStatus().toString(),
-                                transaction.getComment()
+                                transaction.getComment(),
+                                transaction.getBookCopy().getInventoryNumber()
                         ))
                         .toList()
         );
