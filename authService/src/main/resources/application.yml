@@ -1,9 +1,0 @@
-server:
-  port: 8081
-spring:
-  application.name: ${APPLICATION_NAME:authService}
-keycloak:
-  auth-server-url: http://localhost:8080/auth
-  realm: booBook_realm
-  resource: springsecurity
-  public-client: true
