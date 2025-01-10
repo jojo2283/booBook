@@ -23,3 +23,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://keycloak.itmo.dmitriy.space/realms/boobook
+
+  kafka:
+    bootstrap-servers: ru.dmitriy.space:31411
