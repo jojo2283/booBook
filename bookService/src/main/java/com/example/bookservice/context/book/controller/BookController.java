@@ -7,6 +7,7 @@ import com.example.bookservice.context.book.model.BookSearchRequest;
 import com.example.bookservice.context.book.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,16 +29,19 @@ public class BookController {
         return ResponseEntity.ok(bookService.findBookById(id));
     }
 
+    @PreAuthorize("hasRole('LIBRARIAN')")
     @PostMapping("/newBook")
     public ResponseEntity<BookModel> createBook(@RequestBody Book Book) {
         return ResponseEntity.ok(bookService.createBook(Book));
     }
 
+    @PreAuthorize("hasRole('LIBRARIAN')")
     @PutMapping("/books/{id}")
     public ResponseEntity<BookModel> updateBook(@PathVariable Long id, @RequestBody Book Book) {
         return ResponseEntity.ok(bookService.updateBook(id, Book));
     }
 
+    @PreAuthorize("hasRole('LIBRARIAN')")
     @DeleteMapping("/books/{id}")
     public ResponseEntity<Void> deleteHumanBeing(@PathVariable Long id) {
         if (bookService.deleteBook(id)) {

@@ -6,6 +6,7 @@ import com.example.bookservice.context.theme.service.ThemeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +22,13 @@ public class ThemeController {
         return ResponseEntity.status(HttpStatus.OK).body(themeService.findAllThemes());
     }
 
+    @PreAuthorize("hasRole('LIBRARIAN')")
     @PostMapping
     public ResponseEntity<Theme> createTheme(@RequestBody Theme theme) {
         return ResponseEntity.ok(themeService.createTheme(theme));
     }
 
+    @PreAuthorize("hasRole('LIBRARIAN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTheme(@PathVariable Long id) {
         if (themeService.deleteTheme(id)) {

@@ -8,6 +8,7 @@ import com.example.bookservice.context.library.service.LibraryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +21,7 @@ public class LibraryController {
     private final LibraryService libraryService;
     private final BookCopyCsvService bookCopyCsvService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/allLibraries")
     public ResponseEntity<List<Library>> getAllLibraries() {
         return ResponseEntity.ok(libraryService.getLibrary());
@@ -29,10 +31,13 @@ public class LibraryController {
     public ResponseEntity<List<LibraryResponse>> findBookCopyInlabrary(@PathVariable Long bookId) {
         return ResponseEntity.ok(libraryService.findCopies(bookId));
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/new")
     public ResponseEntity<Library> createLibrary(@RequestBody Library library) {
         return ResponseEntity.ok(libraryService.create(library));
     }
+
+    @PreAuthorize("hasRole('LIBRARIAN')")
     @PostMapping("/upload")
     public ResponseEntity<String> importBookCopies(@RequestParam("file") MultipartFile file) {
         try {

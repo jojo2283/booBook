@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())) // Настраиваем OAuth2
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/**").permitAll()
+                        .requestMatchers("/admin").hasRole("LIBRARIAN")
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()); // Настройка доступа
         return http.build();
@@ -60,6 +61,14 @@ public class SecurityConfig {
         converter.setPrincipalClaimName("preferred_username");
         converter.setJwtGrantedAuthoritiesConverter(jwt -> {
             var roles = (List<String>) jwt.getClaimAsMap("realm_access").get("roles");
+            if (roles.contains("ROLE_ADMIN")){
+                roles.add("ROLE_LIBRARIAN");
+                roles.add("ROLE_USER");
+            }
+            else if (roles.contains("ROLE_LIBRARIAN")){
+
+                roles.add("ROLE_USER");
+            }
             return roles.stream()
                     .map(SimpleGrantedAuthority::new)
                     .map(GrantedAuthority.class::cast).collect(Collectors.toList());

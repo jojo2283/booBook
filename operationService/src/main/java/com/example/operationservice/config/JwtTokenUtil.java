@@ -45,6 +45,15 @@ public class JwtTokenUtil {
 
         List<String> roles = (List<String>) realmAccess.get("roles");
 
+        if (roles.contains("ROLE_ADMIN")){
+            roles.add("ROLE_LIBRARIAN");
+            roles.add("ROLE_USER");
+        }
+        else if (roles.contains("ROLE_LIBRARIAN")){
+
+            roles.add("ROLE_USER");
+        }
+
 
         List<SimpleGrantedAuthority> authorities = roles.stream()
                 .map(SimpleGrantedAuthority::new)
