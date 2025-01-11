@@ -39,9 +39,11 @@ public class RatingService {
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
         Rating newRating = new Rating();
+
         newRating.setRatingValue(rating.getRatingValue());
         newRating.setReview(rating.getReview());
         newRating.setUserId(userDetails.getId());
+        newRating.setEmail(userDetails.getEmail());
         newRating.setBook(bookRepository.findById(rating.getBookId()).orElseThrow());
         newRating.setTime(LocalDateTime.now());
         return RatingModel.toModel(ratingRepository.save(newRating));

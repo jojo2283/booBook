@@ -17,9 +17,10 @@ public class UnifiedDataController {
     private final UnifiedDataService unifiedDataService;
 
     @GetMapping
-    public ResponseEntity<List<UnifiedData>> getAllRatings(@RequestParam(required = false) String userId) {
-        return ResponseEntity.ok(unifiedDataService.getUnifiedDataSortedByTime(userId));
+    public ResponseEntity<List<UnifiedData>> getAllRatings(@RequestParam(required = false) String email) {
+        return ResponseEntity.ok(unifiedDataService.getUnifiedDataSortedByTime(email));
     }
+
 
 
 }

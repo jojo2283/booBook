@@ -1,8 +1,12 @@
 package com.example.operationservice.context.unifieddata;
 
+import com.example.operationservice.config.JwtTokenUtil;
 import com.example.operationservice.context.author.model.AuthorModel;
 import com.example.operationservice.context.booktransaction.repository.BookTransactionRepository;
 import com.example.operationservice.context.rating.repository.RatingRepository;
+import com.example.operationservice.context.user.CustomUserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,8 +25,13 @@ public class UnifiedDataService {
         this.bookTransactionRepository = bookTransactionRepository;
     }
 
-    public List<UnifiedData> getUnifiedDataSortedByTime(String userId) {
+    public List<UnifiedData> getUnifiedDataSortedByTime(String email) {
         List<UnifiedData> unifiedData = new ArrayList<>();
+        String userId;
+
+            Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
+            userId = userDetails.getId();
 
         // Добавляем данные из Rating
         unifiedData.addAll(
@@ -32,6 +41,7 @@ public class UnifiedDataService {
                                 "Rating",
                                 rating.getTime(),
                                 rating.getUserId(),
+                                rating.getEmail(),
                                 rating.getRatingValue(),
                                 rating.getReview(),
                                 rating.getBook().getTitle(),
@@ -53,6 +63,7 @@ public class UnifiedDataService {
                                 "BookTransaction",
                                 transaction.getCreationDate(),
                                 transaction.getUserId(),
+                                transaction.getEmail(),
                                 null,
                                 null,
                                 transaction.getBookCopy().getBook().getTitle(),
@@ -65,12 +76,17 @@ public class UnifiedDataService {
                         ))
                         .toList()
         );
-        if (userId == null) {
+        if (userId == null&&email==null) {
             // Сортируем объединенный список по времени
+            throw new RuntimeException();
+        }
+        if (email!=null) {
             return unifiedData.stream()
+                    .filter(unit -> Objects.equals(unit.getEmail(), email))
                     .sorted(Comparator.comparing(UnifiedData::getTime).reversed())
                     .collect(Collectors.toList());
         }
+
         return unifiedData.stream()
                 .filter(unit -> Objects.equals(unit.getUserId(), userId))
                 .sorted(Comparator.comparing(UnifiedData::getTime).reversed())

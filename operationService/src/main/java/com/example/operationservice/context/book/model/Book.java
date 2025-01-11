@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import java.util.List;
 
@@ -53,4 +54,7 @@ public class Book {
 
     @OneToMany(mappedBy = "book")
     private List<BookCopy> copies;
+
+    @Formula("(SELECT get_average_book_rating(id))")
+    private Float averageRating;
 }

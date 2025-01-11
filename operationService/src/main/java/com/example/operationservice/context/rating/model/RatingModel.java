@@ -18,6 +18,7 @@ public class RatingModel {
 
     private Long id;
     private String userId;
+    private String email;
     private BookModel book;
     private Integer ratingValue;
     private String review;
@@ -31,6 +32,7 @@ public class RatingModel {
 
         RatingModel model = new RatingModel();
         model.setId(rating.getId());
+        model.setEmail(rating.getEmail());
         model.setUserId(userDetails.getId());
         model.setBook(BookModel.toModel(rating.getBook()));
         model.setRatingValue(rating.getRatingValue());

@@ -6,4 +6,5 @@ public interface Endpoints {
 
     String REVIEWS = "/api/v1/operations/reviews";
     String HISTORY = "/api/v1/operations/history";
+
 }

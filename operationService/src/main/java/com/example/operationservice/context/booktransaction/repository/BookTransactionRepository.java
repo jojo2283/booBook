@@ -23,6 +23,7 @@ public interface BookTransactionRepository extends JpaRepository<BookTransaction
     BookTransaction findByBookCopyIdAndStatusApproved(@Param("bookCopyId") Long bookCopyId);
 
     List<BookTransaction> findByUserId(String userId);
+
 }
 
 

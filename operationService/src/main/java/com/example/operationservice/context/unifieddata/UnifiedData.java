@@ -19,6 +19,7 @@ public class UnifiedData {
 
     // Поля для Rating
     private String userId;
+    private String email;
     private Integer ratingValue;
     private String review;
 

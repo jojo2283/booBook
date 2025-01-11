@@ -22,6 +22,7 @@ public class Rating {
 
 
     private String userId;
+    private String email;
 
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
