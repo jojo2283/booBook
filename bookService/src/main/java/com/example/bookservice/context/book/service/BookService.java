@@ -8,12 +8,11 @@ import com.example.bookservice.context.book.model.BookSearchRequest;
 import com.example.bookservice.context.book.repository.BookRepository;
 import com.example.bookservice.context.book.specification.BookSpecifications;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +20,7 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
-    public List<BookModel> findBooks(BookSearchRequest request) {
+    public Page<BookModel> findBooks(BookSearchRequest request, Pageable pageable) {
         Specification<Book> spec = Specification.where(null); // Начинаем с пустой спецификации
 
         if (request.getName() != null && !request.getName().trim().isEmpty()) {
@@ -59,7 +58,7 @@ public class BookService {
         } else if (request.getAvailable() != null) {
             spec = spec.and(BookSpecifications.hasNoAvailableCopies());
         }
-        if (request.getRatingMIN() != null && request.getRatingMAX()!=null){
+        if (request.getRatingMIN() != null && request.getRatingMAX() != null) {
             spec = Specification.where(BookSpecifications.hasRatingBetween(request.getRatingMIN(), request.getRatingMAX()));
         }
 //
@@ -75,8 +74,8 @@ public class BookService {
 //        }
 
 
-        return bookRepository.findAll(spec).stream()
-                .map(BookModel::toModel).collect(Collectors.toList());
+        return bookRepository.findAll(spec, pageable)
+                .map(BookModel::toModel);
     }
 
     public BookModel findBookById(Long id) {

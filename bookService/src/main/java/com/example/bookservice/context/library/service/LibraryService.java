@@ -6,10 +6,11 @@ import com.example.bookservice.context.library.model.Library;
 import com.example.bookservice.context.library.model.LibraryResponse;
 import com.example.bookservice.context.library.repository.LibraryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,9 +19,9 @@ public class LibraryService {
     private final LibraryRepository libraryRepository;
 
 
-    public List<LibraryResponse> findCopies(Long bookId) {
-        List<BookCopy> copies = copiesRepository.findByBookId(bookId);
-        return copies.stream().map(LibraryResponse::fromBookCopyToResponse).collect(Collectors.toList());
+    public Page<LibraryResponse> findCopies(Long bookId, Pageable pageable) {
+        Page<BookCopy> copies = copiesRepository.findByBookId(bookId, pageable);
+        return copies.map(LibraryResponse::fromBookCopyToResponse);
     }
 
 

@@ -4,11 +4,11 @@ import com.example.bookservice.api.Endpoints;
 import com.example.bookservice.context.book.model.BookCopyModel;
 import com.example.bookservice.context.book.service.CopiesService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,9 +18,11 @@ public class CopiesController {
 
     @PreAuthorize("hasRole('LIBRARIAN')")
     @GetMapping
-    public ResponseEntity<List<BookCopyModel>> findBooks(@RequestParam(required = false) Long bookId, @RequestParam(required = false) Long libraryId) {
-        return ResponseEntity.ok(copiesService.findBooks(bookId, libraryId));
+    public ResponseEntity<Page<BookCopyModel>> findBooks(@RequestParam(required = false) Long bookId, @RequestParam(required = false) Long libraryId, Pageable pageable) {
+        return ResponseEntity.ok(copiesService.findBooks(bookId, libraryId,pageable));
     }
+
+
     @PreAuthorize("hasRole('LIBRARIAN')")
     @PostMapping
     public ResponseEntity<BookCopyModel> createBook(@RequestBody BookCopyModel bookCopyook) {

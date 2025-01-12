@@ -6,11 +6,11 @@ import com.example.bookservice.context.book.model.BookModel;
 import com.example.bookservice.context.book.model.BookSearchRequest;
 import com.example.bookservice.context.book.service.BookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,9 +20,12 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping("/find")
-    public ResponseEntity<List<BookModel>> findBooks(@ModelAttribute BookSearchRequest request) {
-        return ResponseEntity.ok(bookService.findBooks(request));
+    public ResponseEntity<Page<BookModel>> findBooks(
+            @ModelAttribute BookSearchRequest request,
+            Pageable pageable) {
+        return ResponseEntity.ok(bookService.findBooks(request, pageable));
     }
+
 
     @GetMapping("/books/{id}")
     public ResponseEntity<BookModel> getBookById(@PathVariable Long id) {

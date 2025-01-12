@@ -6,6 +6,8 @@ import com.example.bookservice.context.library.model.Library;
 import com.example.bookservice.context.library.model.LibraryResponse;
 import com.example.bookservice.context.library.service.LibraryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,8 +30,8 @@ public class LibraryController {
     }
 
     @GetMapping("/allLibraries/{bookId}")
-    public ResponseEntity<List<LibraryResponse>> findBookCopyInlabrary(@PathVariable Long bookId) {
-        return ResponseEntity.ok(libraryService.findCopies(bookId));
+    public ResponseEntity<Page<LibraryResponse>> findBookCopyInlabrary(@PathVariable Long bookId, Pageable pageable) {
+        return ResponseEntity.ok(libraryService.findCopies(bookId,pageable));
     }
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/new")

@@ -8,10 +8,11 @@ import com.example.bookservice.context.book.repository.BookRepository;
 import com.example.bookservice.context.book.repository.CopiesRepository;
 import com.example.bookservice.context.library.repository.LibraryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -20,23 +21,25 @@ public class CopiesService {
     private final BookRepository bookRepository;
     private final LibraryRepository libraryRepository;
 
-    public List<BookCopyModel> findBooks(Long bookId, Long libraryId) {
-        List<BookCopy> copiesList;
+    public Page<BookCopyModel> findBooks(Long bookId, Long libraryId, Pageable pageable) {
+        Page<BookCopy> copiesPage;
+
         if (bookId != null && libraryId != null) {
-            copiesList = copiesRepository.findByBookIdAndLibraryId(bookId, libraryId);
+            copiesPage = copiesRepository.findByBookIdAndLibraryId(bookId, libraryId, pageable);
 
         } else if (bookId != null) {
-            copiesList = copiesRepository.findByBookId(bookId);
+            copiesPage = copiesRepository.findByBookId(bookId, pageable);
 
         } else if (libraryId != null) {
-            copiesList = copiesRepository.findByLibraryId(libraryId);
+            copiesPage = copiesRepository.findByLibraryId(libraryId, pageable);
 
         } else {
-            copiesList = copiesRepository.findAll();
+            copiesPage = copiesRepository.findAll(pageable);
         }
 
-        return copiesList != null ? copiesList.stream().map(BookCopyModel::toModel).collect(Collectors.toList()) : null;
+        return copiesPage.map(BookCopyModel::toModel); // Преобразуем Page<BookCopy> в Page<BookCopyModel>
     }
+
 
     public boolean deleteBook(Long id) {
         BookCopy book = copiesRepository.findById(id).orElse(null);
