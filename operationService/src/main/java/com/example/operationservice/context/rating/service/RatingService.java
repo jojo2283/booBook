@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,10 +22,12 @@ public class RatingService {
     private final RatingRepository ratingRepository;
     private final BookRepository bookRepository;
 
+    @Transactional
     public List<RatingModel> getAllRatings() {
         return ratingRepository.findAll().stream().map(RatingModel::toModel).collect(Collectors.toList());
     }
 
+    @Transactional
     public List<RatingModel> getOneRatings(Long bookId) {
         List<Rating> ratingList = ratingRepository.findAllByBookId(bookId).orElse(null);
         if (ratingList != null) {
@@ -32,6 +35,8 @@ public class RatingService {
         }
         return null;
     }
+
+    @Transactional
 
     public RatingModel createReview(RatingModel rating) {
 

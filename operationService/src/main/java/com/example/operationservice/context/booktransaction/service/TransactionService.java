@@ -3,7 +3,6 @@ package com.example.operationservice.context.booktransaction.service;
 import com.example.operationservice.config.JwtTokenUtil;
 import com.example.operationservice.context.book.exception.BookCopyNotFoundInLibraryException;
 import com.example.operationservice.context.book.model.BookCopy;
-import com.example.operationservice.context.book.repository.BookRepository;
 import com.example.operationservice.context.book.repository.CopiesRepository;
 import com.example.operationservice.context.booktransaction.exception.BookNotAprrovedYetException;
 import com.example.operationservice.context.booktransaction.model.*;
@@ -18,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,10 +30,11 @@ import java.util.stream.Collectors;
 public class TransactionService {
     private final BookTransactionRepository bookTransactionRepository;
     private final CopiesRepository copiesRepository;
-    private final BookRepository bookRepository;
+
     private final KafkaProducer kafkaProducer;
     private final ObjectMapper objectMapper;
 
+    @Transactional
     public BookTransactionModel reserve(Long id, LibraryRequest library) {
         BookTransaction transaction = new BookTransaction();
         List<BookCopy> bookCopyList = copiesRepository.findByBookIdAndLibraryId(id, library.getLibraryId())
@@ -59,10 +60,8 @@ public class TransactionService {
         return BookTransactionModel.toModel(bookTransactionRepository.save(transaction));
     }
 
+    @Transactional
     public List<TransactionResponse> getRequests(Long libraryId) {
-//        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
-
         List<BookTransaction> res = bookTransactionRepository.findUnborrowedTransactionsByLibraryId(libraryId);
         return res.stream()
                 .filter(bookTransaction -> bookTransaction.getStatus() != Status.REJECTED)
@@ -70,6 +69,7 @@ public class TransactionService {
 
     }
 
+    @Transactional
     public BookTransactionModel approve(Long id) {
         BookTransaction transaction = bookTransactionRepository.findById(id).orElse(null);
         transaction.setBorrowDate(LocalDateTime.now());
@@ -99,6 +99,7 @@ public class TransactionService {
 
     }
 
+    @Transactional
     public BookTransactionModel decline(Long id, Reason reason) {
         BookTransaction transaction = bookTransactionRepository.findById(id).orElse(null);
         transaction.setStatus(Status.REJECTED);
@@ -118,6 +119,7 @@ public class TransactionService {
         return BookTransactionModel.toModel(bookTransactionRepository.save(transaction));
     }
 
+    @Transactional
     public BookTransactionModel returnBack(ReturnRequest request) {
         BookCopy bookCopy = copiesRepository.findByInventoryNumber(request.getInvNumber());
         BookTransaction bookTransaction = bookTransactionRepository.findByBookCopyIdAndStatusApproved(bookCopy.getId());
@@ -130,6 +132,7 @@ public class TransactionService {
         return BookTransactionModel.toModel(bookTransactionRepository.save(bookTransaction));
     }
 
+    @Transactional
     public Void cancel(Long id) {
         BookTransaction bookTransaction = bookTransactionRepository.findById(id).orElseThrow(() -> new BookCopyNotFoundInLibraryException("no such transaction"));
         if (bookTransaction.getStatus() == Status.PENDING) {
@@ -140,12 +143,11 @@ public class TransactionService {
         }
     }
 
+    @Transactional
     public List<Status> getStatus(Long bookId) {
         List<Status> allStatus = new ArrayList<>();
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
-
-//        Book book = bookRepository.findById(bookId).orElseThrow(()->new BookNotFoundException("no such book"));
         String userId = userDetails.getId();
 
         List<BookTransaction> bookTransactionsList = bookTransactionRepository.findByUserId(userId);

@@ -11,6 +11,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +26,7 @@ public class BookCopyCsvService {
     private final LibraryRepository libraryRepository;
     private final CopiesRepository bookCopyRepository;
 
+    @Transactional
     public void importBookCopiesFromCsv(InputStream csvInputStream) throws IOException {
         try (Reader reader = new InputStreamReader(csvInputStream);
              CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT

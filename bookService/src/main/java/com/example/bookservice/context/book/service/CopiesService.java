@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -21,6 +21,7 @@ public class CopiesService {
     private final BookRepository bookRepository;
     private final LibraryRepository libraryRepository;
 
+    @Transactional
     public Page<BookCopyModel> findBooks(Long bookId, Long libraryId, Pageable pageable) {
         Page<BookCopy> copiesPage;
 
@@ -37,10 +38,11 @@ public class CopiesService {
             copiesPage = copiesRepository.findAll(pageable);
         }
 
-        return copiesPage.map(BookCopyModel::toModel); // Преобразуем Page<BookCopy> в Page<BookCopyModel>
+        return copiesPage.map(BookCopyModel::toModel);
     }
 
 
+    @Transactional
     public boolean deleteBook(Long id) {
         BookCopy book = copiesRepository.findById(id).orElse(null);
 
@@ -53,6 +55,7 @@ public class CopiesService {
         return true;
     }
 
+    @Transactional
     public BookCopyModel createBook(BookCopyModel book) {
         BookCopy bookFromIN = copiesRepository.findByInventoryNumber(book.getInventoryNumber());
         if (bookFromIN != null) {
@@ -70,6 +73,7 @@ public class CopiesService {
 
     }
 
+    @Transactional
     public BookCopyModel updateCopy(Long id, BookCopyModel bookCopy) {
         BookCopy oldBook = copiesRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
 

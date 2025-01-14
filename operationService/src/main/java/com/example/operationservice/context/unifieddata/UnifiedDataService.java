@@ -8,6 +8,7 @@ import com.example.operationservice.context.user.CustomUserDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,11 +21,14 @@ public class UnifiedDataService {
     private final RatingRepository ratingRepository;
     private final BookTransactionRepository bookTransactionRepository;
 
+
+
     public UnifiedDataService(RatingRepository ratingRepository, BookTransactionRepository bookTransactionRepository) {
         this.ratingRepository = ratingRepository;
         this.bookTransactionRepository = bookTransactionRepository;
     }
 
+    @Transactional
     public List<UnifiedData> getUnifiedDataSortedByTime(String email) {
         List<UnifiedData> unifiedData = new ArrayList<>();
         String userId;
@@ -33,7 +37,7 @@ public class UnifiedDataService {
             CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
             userId = userDetails.getId();
 
-        // Добавляем данные из Rating
+
         unifiedData.addAll(
                 ratingRepository.findAll().stream()
                         .map(rating -> new UnifiedData(
@@ -55,7 +59,7 @@ public class UnifiedDataService {
                         .toList()
         );
 
-        // Добавляем данные из BookTransaction
+
         unifiedData.addAll(
                 bookTransactionRepository.findAll().stream()
                         .map(transaction -> new UnifiedData(

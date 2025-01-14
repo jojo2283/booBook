@@ -8,6 +8,7 @@ import com.example.operationservice.context.booktransaction.repository.BookTrans
 import com.example.operationservice.context.library.model.LibraryReportResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class LibraryService {
     private final CopiesRepository copiesRepository;
     private final BookTransactionRepository bookTransactionRepository;
 
+    @Transactional
     public List<LibraryReportResponse> getReport(Long libraryId, LocalDate date) {
         // Получаем все копии книг для данной библиотеки с их соответствующими данными о книге (например, название, автор)
         List<BookCopy> bookCopies = copiesRepository.findByLibraryId(libraryId);

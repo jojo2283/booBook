@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,8 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
+
+    @Transactional
     public Page<BookModel> findBooks(BookSearchRequest request, Pageable pageable) {
         Specification<Book> spec = Specification.where(null); // Начинаем с пустой спецификации
 
@@ -61,23 +64,14 @@ public class BookService {
         if (request.getRatingMIN() != null && request.getRatingMAX() != null) {
             spec = spec.and(BookSpecifications.hasRatingBetween(request.getRatingMIN(), request.getRatingMAX()));
         }
-//
-//        // Фильтрация по популярности
-//        if (request.getPopularity() != null) {
-//            spec = spec.and(BookSpecifications.hasPopularity(request.getPopularity()));
-//        }
-//
 
-//        // Сортировка по полю
-//        if (request.getSortField() != null && !request.getSortField().trim().isEmpty()) {
-//            spec = spec.and(BookSpecifications.sortByField(request.getSortField(), request.isSortAscending()));
-//        }
 
 
         return bookRepository.findAll(spec, pageable)
                 .map(BookModel::toModel);
     }
 
+    @Transactional
     public BookModel findBookById(Long id) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
 
@@ -86,6 +80,7 @@ public class BookService {
 
     }
 
+    @Transactional
     public BookModel createBook(Book book) {
         Book bookFromISBN = bookRepository.findBookByISBN(book.getISBN());
         if (bookFromISBN != null) {
@@ -95,6 +90,7 @@ public class BookService {
         return BookModel.toModel(bookRepository.save(book));
     }
 
+    @Transactional
     public BookModel updateBook(Long id, Book book) {
         Book oldBook = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
 
@@ -107,6 +103,7 @@ public class BookService {
         return BookModel.toModel(bookRepository.save(oldBook));
     }
 
+    @Transactional
     public boolean deleteBook(Long id) {
         Book book = bookRepository.findById(id).orElse(null);
 
