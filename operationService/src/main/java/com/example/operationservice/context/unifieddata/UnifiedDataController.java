@@ -17,7 +17,7 @@ import java.util.List;
 public class UnifiedDataController {
     private final UnifiedDataService unifiedDataService;
 
-    @PreAuthorize("hasRole('LIBRARIAN')")
+
     @GetMapping
     public ResponseEntity<List<UnifiedData>> getAllRatings(@RequestParam(required = false) String email) {
         return ResponseEntity.ok(unifiedDataService.getUnifiedDataSortedByTime(email));
