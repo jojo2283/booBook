@@ -23,7 +23,7 @@ public class LibraryController {
     private final LibraryService libraryService;
     private final BookCopyCsvService bookCopyCsvService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @GetMapping("/allLibraries")
     public ResponseEntity<List<Library>> getAllLibraries() {
         return ResponseEntity.ok(libraryService.getLibrary());
