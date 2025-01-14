@@ -59,7 +59,7 @@ public class BookService {
             spec = spec.and(BookSpecifications.hasNoAvailableCopies());
         }
         if (request.getRatingMIN() != null && request.getRatingMAX() != null) {
-            spec = Specification.where(BookSpecifications.hasRatingBetween(request.getRatingMIN(), request.getRatingMAX()));
+            spec = spec.and(BookSpecifications.hasRatingBetween(request.getRatingMIN(), request.getRatingMAX()));
         }
 //
 //        // Фильтрация по популярности
