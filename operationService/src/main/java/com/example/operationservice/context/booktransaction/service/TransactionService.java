@@ -148,6 +148,7 @@ public class TransactionService {
         List<Status> allStatus = new ArrayList<>();
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
+//        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userId = userDetails.getId();
 
         List<BookTransaction> bookTransactionsList = bookTransactionRepository.findByUserId(userId);

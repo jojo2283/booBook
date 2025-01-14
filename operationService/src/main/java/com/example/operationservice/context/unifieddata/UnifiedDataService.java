@@ -35,6 +35,7 @@ public class UnifiedDataService {
 
             Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
+//        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             userId = userDetails.getId();
 
 
@@ -81,7 +82,7 @@ public class UnifiedDataService {
                         .toList()
         );
         if (userId == null&&email==null) {
-            // Сортируем объединенный список по времени
+
             throw new RuntimeException();
         }
         if (email!=null) {

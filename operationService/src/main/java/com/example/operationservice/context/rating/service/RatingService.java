@@ -43,6 +43,7 @@ public class RatingService {
 
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
+//        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Rating newRating = new Rating();
 
         newRating.setRatingValue(rating.getRatingValue());

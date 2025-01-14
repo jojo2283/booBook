@@ -24,13 +24,13 @@ public class LibraryService {
 
     @Transactional
     public List<LibraryReportResponse> getReport(Long libraryId, LocalDate date) {
-        // Получаем все копии книг для данной библиотеки с их соответствующими данными о книге (например, название, автор)
+
         List<BookCopy> bookCopies = copiesRepository.findByLibraryId(libraryId);
         List<BookTransaction> bookTransactions = bookTransactionRepository.findAll();
-        // Создаем карту для хранения количества копий каждой книги
+
         Map<Long, Integer> bookCountMap = new HashMap<>();
         if (date == null) {
-            // Перебираем все копии книг и подсчитываем количество каждой книги
+
             for (BookCopy bookCopy : bookCopies) {
                 if (bookCopy.getAvailable()) {
                     Long bookId = bookCopy.getBook().getId();
@@ -58,20 +58,20 @@ public class LibraryService {
             }
         }
 
-        // Создаем список ответов для API
+
         List<LibraryReportResponse> reportResponses = new ArrayList<>();
 
-        // Заполняем список reportResponses данными о книгах и количестве их копий
+
         for (
                 Map.Entry<Long, Integer> entry : bookCountMap.entrySet()) {
             Long bookId = entry.getKey();
             Integer count = entry.getValue();
 
-            // Создаем объект LibraryReportResponse
+
             LibraryReportResponse response = new LibraryReportResponse();
             response.setCount(count);
 
-            // Найти BookModel для книги (информация о книге уже загружена)
+
             BookModelForReport bookModel = bookCopies.stream()
                     .filter(bookCopy -> bookCopy.getBook().getId().equals(bookId))
                     .findFirst()
@@ -80,7 +80,7 @@ public class LibraryService {
 
             response.setBookModels(bookModel);
 
-            // Добавляем в список
+
             reportResponses.add(response);
         }
 

@@ -27,20 +27,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults());
-//        http.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
+        http.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/operations",
-                                "/api/v1/operations/approve/*",
-                                "/api/v1/operations/decline/*",
-                                "/api/v1/operations/return",
-
-                                "/api/v1/operations/libraryReport/*"
+                        .requestMatchers(/*"/api/v1/operations",*/
+//                                "/api/v1/operations/approve/*",
+//                                "/api/v1/operations/decline/*",
+//                                "/api/v1/operations/return",
+//
+//                                "/api/v1/operations/libraryReport/*",
+                                "/librarian"
                         ).hasRole("LIBRARIAN")
                         .anyRequest().authenticated())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic().disable()
                 .build();
     }
