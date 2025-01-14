@@ -12,11 +12,9 @@ import com.example.operationservice.context.library.model.LibraryRequest;
 import com.example.operationservice.context.user.CustomUserDetails;
 import com.example.operationservice.kafka.EmailRequest;
 import com.example.operationservice.kafka.KafkaProducer;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -39,7 +37,7 @@ public class TransactionService {
     public BookTransactionModel reserve(Long id, LibraryRequest library) {
         BookTransaction transaction = new BookTransaction();
         List<BookCopy> bookCopyList = copiesRepository.findByBookIdAndLibraryId(id, library.getLibraryId())
-                .stream().filter(status -> status.getAvailable()==Boolean.TRUE).toList();
+                .stream().filter(status -> status.getAvailable() == Boolean.TRUE).toList();
         if (bookCopyList.isEmpty()) {
             throw new BookCopyNotFoundInLibraryException("Book copy not found in Library");
         }
@@ -62,6 +60,9 @@ public class TransactionService {
     }
 
     public List<TransactionResponse> getRequests(Long libraryId) {
+//        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
+
         List<BookTransaction> res = bookTransactionRepository.findUnborrowedTransactionsByLibraryId(libraryId);
         return res.stream()
                 .filter(bookTransaction -> bookTransaction.getStatus() != Status.REJECTED)
@@ -89,8 +90,8 @@ public class TransactionService {
                     "Ваша бронь на книгу " + transaction.getBookCopy().getBook().getTitle() + " одобрена."
 
             ));
-            kafkaProducer.sendMessage( json);
-        }catch (JsonProcessingException ex){
+            kafkaProducer.sendMessage(json);
+        } catch (JsonProcessingException ex) {
             throw new RuntimeException();
         }
 
@@ -107,11 +108,11 @@ public class TransactionService {
             String json = objectMapper.writeValueAsString(new EmailRequest(
                     transaction.getEmail(),
                     "BooBook",
-                    "Ваша бронь на книгу " + transaction.getBookCopy().getBook().getTitle() + " отклонена. Причина: "+transaction.getComment()+"."
+                    "Ваша бронь на книгу " + transaction.getBookCopy().getBook().getTitle() + " отклонена. Причина: " + transaction.getComment() + "."
 
             ));
-            kafkaProducer.sendMessage( json);
-        }catch (JsonProcessingException ex){
+            kafkaProducer.sendMessage(json);
+        } catch (JsonProcessingException ex) {
             throw new RuntimeException();
         }
         return BookTransactionModel.toModel(bookTransactionRepository.save(transaction));
