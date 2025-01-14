@@ -1,12 +1,10 @@
 package com.example.operationservice.context.unifieddata;
 
-import com.example.operationservice.config.JwtTokenUtil;
 import com.example.operationservice.context.author.model.AuthorModel;
 import com.example.operationservice.context.booktransaction.repository.BookTransactionRepository;
 import com.example.operationservice.context.rating.repository.RatingRepository;
 import com.example.operationservice.context.user.CustomUserDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +20,6 @@ public class UnifiedDataService {
     private final BookTransactionRepository bookTransactionRepository;
 
 
-
     public UnifiedDataService(RatingRepository ratingRepository, BookTransactionRepository bookTransactionRepository) {
         this.ratingRepository = ratingRepository;
         this.bookTransactionRepository = bookTransactionRepository;
@@ -33,10 +30,10 @@ public class UnifiedDataService {
         List<UnifiedData> unifiedData = new ArrayList<>();
         String userId;
 
-            Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
-//        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            userId = userDetails.getId();
+//            Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//            CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userId = userDetails.getId();
 
 
         unifiedData.addAll(
@@ -81,11 +78,11 @@ public class UnifiedDataService {
                         ))
                         .toList()
         );
-        if (userId == null&&email==null) {
+        if (userId == null && email == null) {
 
             throw new RuntimeException();
         }
-        if (email!=null) {
+        if (email != null) {
             return unifiedData.stream()
                     .filter(unit -> Objects.equals(unit.getEmail(), email))
                     .sorted(Comparator.comparing(UnifiedData::getTime).reversed())

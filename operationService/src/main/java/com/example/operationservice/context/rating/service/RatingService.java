@@ -1,6 +1,5 @@
 package com.example.operationservice.context.rating.service;
 
-import com.example.operationservice.config.JwtTokenUtil;
 import com.example.operationservice.context.book.repository.BookRepository;
 import com.example.operationservice.context.rating.model.Rating;
 import com.example.operationservice.context.rating.model.RatingModel;
@@ -8,7 +7,6 @@ import com.example.operationservice.context.rating.repository.RatingRepository;
 import com.example.operationservice.context.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,9 +39,9 @@ public class RatingService {
     public RatingModel createReview(RatingModel rating) {
 
 
-        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
-//        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Rating newRating = new Rating();
 
         newRating.setRatingValue(rating.getRatingValue());

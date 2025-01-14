@@ -1,6 +1,5 @@
 package com.example.operationservice.context.booktransaction.service;
 
-import com.example.operationservice.config.JwtTokenUtil;
 import com.example.operationservice.context.book.exception.BookCopyNotFoundInLibraryException;
 import com.example.operationservice.context.book.model.BookCopy;
 import com.example.operationservice.context.book.repository.CopiesRepository;
@@ -15,7 +14,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,11 +43,11 @@ public class TransactionService {
         BookCopy book = bookCopyList.get(0);
         transaction.setBookCopy(book);
 //
-        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
+//        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
 
 
-//        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         transaction.setUserId(userDetails.getId());
         transaction.setEmail(userDetails.getEmail());
@@ -146,9 +144,9 @@ public class TransactionService {
     @Transactional
     public List<Status> getStatus(Long bookId) {
         List<Status> allStatus = new ArrayList<>();
-        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
-//        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userId = userDetails.getId();
 
         List<BookTransaction> bookTransactionsList = bookTransactionRepository.findByUserId(userId);

@@ -16,10 +16,10 @@ import java.util.List;
 public class RatingController {
     private final RatingService ratingService;
 
-    @GetMapping
-    public ResponseEntity<List<RatingModel>> getAllRatings() {
-        return ResponseEntity.ok(ratingService.getAllRatings());
-    }
+//    @GetMapping
+//    public ResponseEntity<List<RatingModel>> getAllRatings() {
+//        return ResponseEntity.ok(ratingService.getAllRatings());
+//    }
 
     @GetMapping("/{bookId}")
     public ResponseEntity<List<RatingModel>> getRatingsByBook(@PathVariable Long bookId) {

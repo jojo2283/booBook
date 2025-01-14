@@ -6,6 +6,7 @@ import com.example.operationservice.context.booktransaction.service.TransactionS
 import com.example.operationservice.context.library.model.LibraryRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 public class TransactionController {
     private final TransactionService transactionService;
 
-
+    @PreAuthorize("hasRole('LIBRARIAN')")
     @GetMapping
     public ResponseEntity<List<TransactionResponse>> getAllRequests(@RequestParam Long libraryId) {
         return ResponseEntity.ok(transactionService.getRequests(libraryId));
@@ -33,17 +34,19 @@ public class TransactionController {
     }
 
 
+    @PreAuthorize("hasRole('LIBRARIAN')")
     @PostMapping("/approve/{id}")
     public ResponseEntity<BookTransactionModel> approveRequest(@PathVariable Long id) {
         return ResponseEntity.ok(transactionService.approve(id));
     }
-
+    @PreAuthorize("hasRole('LIBRARIAN')")
     @PostMapping("/decline/{id}")
     public ResponseEntity<BookTransactionModel> declineRequest(@PathVariable Long id, @RequestBody Reason reason) {
         return ResponseEntity.ok(transactionService.decline(id, reason));
     }
 
 
+    @PreAuthorize("hasRole('LIBRARIAN')")
     @PostMapping("/return")
     public ResponseEntity<BookTransactionModel> returnBook(@RequestBody ReturnRequest request) {
         return ResponseEntity.ok(transactionService.returnBack(request));

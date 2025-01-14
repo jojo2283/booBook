@@ -1,13 +1,11 @@
 package com.example.operationservice.context.rating.model;
 
-import com.example.operationservice.config.JwtTokenUtil;
 import com.example.operationservice.context.book.model.BookModel;
 import com.example.operationservice.context.user.CustomUserDetails;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.time.LocalDateTime;
 
@@ -27,9 +25,9 @@ public class RatingModel {
 
     public static RatingModel toModel(Rating rating) {
 
-        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
-
+//        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        CustomUserDetails userDetails = JwtTokenUtil.parseToken(jwt.getTokenValue());
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         RatingModel model = new RatingModel();
         model.setId(rating.getId());
         model.setEmail(rating.getEmail());
